@@ -156,14 +156,16 @@ function renderChart() {
   const W = 640, H = 420, m = { l: 48, r: 16, t: 16, b: 44 };
   const pw = W - m.l - m.r, ph = H - m.t - m.b;
   const sx = v => m.l + (v - 0.5) / 5 * pw, sy = v => m.t + ph - (v - 0.5) / 5 * ph;
-  // Spread dots that share a cell so none hide each other.
+  // Dots sharing a score sit side by side; each spot gets one combined label above it.
   const cells = {};
   data.forEach(r => (cells[r.feasibility + "," + r.impact] ||= []).push(r));
-  const pts = [];
-  Object.values(cells).forEach(g => g.forEach((r, i) => {
-    const a = g.length > 1 ? (2 * Math.PI * i) / g.length : 0, rad = g.length > 1 ? 14 : 0;
-    pts.push({ r, x: sx(r.feasibility) + rad * Math.cos(a), y: sy(r.impact) + rad * Math.sin(a) });
-  }));
+  const pts = [], labels = [];
+  Object.values(cells).forEach(g => {
+    g.sort((a, b) => a.id.localeCompare(b.id));
+    const cx = sx(g[0].feasibility), cy = sy(g[0].impact);
+    g.forEach((r, i) => pts.push({ r, x: cx + (i - (g.length - 1) / 2) * 16, y: cy }));
+    labels.push({ x: cx, y: cy - 14, t: g.map(r => r.id).join(" · ") });
+  });
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Scatter chart of impact versus feasibility for ${data.length} opportunities">`;
   s += `<rect x="${sx(3)}" y="${m.t}" width="${sx(5.5) - sx(3)}" height="${sy(3) - m.t}" fill="var(--quad)"/>`;
   for (let v = 1; v <= 5; v++) {
@@ -181,9 +183,9 @@ function renderChart() {
   s += `<text transform="translate(14 ${m.t + ph / 2}) rotate(-90)" text-anchor="middle">Impact (1–5) →</text>`;
   pts.forEach(({ r, x, y }, i) => {
     s += `<circle class="dot" cx="${x}" cy="${y}" r="6"/>`;
-    s += `<text x="${x + 10}" y="${y - 8}" style="fill:var(--text-primary)">${esc(r.id)}</text>`;
     s += `<circle class="hit" cx="${x}" cy="${y}" r="14" tabindex="0" data-i="${i}" aria-label="${esc(r.id)}: ${esc(r.solution)}. Impact ${r.impact}, feasibility ${r.feasibility}"/>`;
   });
+  labels.forEach(l => s += `<text x="${l.x}" y="${l.y}" text-anchor="middle" style="fill:var(--text-primary)">${esc(l.t)}</text>`);
   s += "</svg>";
   const box = document.getElementById("chart");
   box.innerHTML = s + '<div class="tip" id="tip"></div>';

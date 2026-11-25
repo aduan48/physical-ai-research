@@ -3,3 +3,8 @@ FOR-1,Forestry,"Aging, shrinking logger workforce; deadliest US job","Remote-ope
 FOR-2,Forestry,"Forest inventory and pest data slow; few remote-sensing staff","Drone + AI forest inventory and pest detection",4,4,6,"$5k–$50k",industries/forestry.md
 FOR-3,Forestry,"Mills must produce more with fewer workers","Computer vision log scaling and lumber grading for small/mid mills",3,4,6,"$10k–$150k",industries/forestry.md
 FOR-4,Forestry,"Paper sales down 41%; downtime costly","Predictive maintenance sensors for paper and packaging mills",3,3,9,"$20k–$200k",industries/forestry.md
+HC-1,Healthcare,"23,500 unstaffed home-care hours/week; high fall rates in oldest state","Privacy-preserving in-home sensors (radar) for fall detection and remote check-ins",5,3,9,"$10k–$100k",industries/healthcare.md
+HC-2,Healthcare,"Nursing homes short-staffed and closing; residents lie on floor after falls","AI video fall detection in nursing homes and memory care",4,4,6,"$5k–$50k",industries/healthcare.md
+HC-3,Healthcare,"Aides injured lifting patients","Robotic and sensor-assisted patient lifting",3,2,36,"$50k–$250k",industries/healthcare.md
+HC-4,Healthcare,"Nurse shortage; MaineGeneral absorbing Inland Hospital's patients","Autonomous hospital delivery robots for supplies, meds, and lab samples",3,3,12,"$100k–$500k",industries/healthcare.md
+HC-5,Healthcare,"Waterville lost its hospital; longer trips for care","Drone delivery of lab samples and medications between sites",3,3,18,"$50k–$300k",industries/healthcare.md

@@ -4,8 +4,8 @@
 | # | Industry | Status |
 |---|---|---|
 | 1 | Forestry, logging, sawmills, paper | ✅ Done 2026-11-24 |
-| 2 | Healthcare and elder care | ⏭ Next |
-| 3 | Manufacturing and food processing | ⬜ |
+| 2 | Healthcare and elder care | ✅ Done 2026-11-24 |
+| 3 | Manufacturing and food processing | ⏭ Next |
 | 4 | Agriculture | ⬜ |
 | 5 | Construction, roads, winter maintenance | ⬜ |
 | 6 | Energy | ⬜ |
@@ -25,6 +25,11 @@
 - GitHub Pages enabled by user.
 - Remaining 403s (maine.gov, bls.gov, colby.edu) are bot blocks, not dead links; BLS pages were read successfully via the page reader.
 
+### 2026-11-24 (healthcare)
+- Healthcare done: 5 opportunities (HC-1 to HC-5), sources S36–S54. Every cited page was opened first (new rule), except S40 (partial read).
+- Key local fact: Northern Light Inland Hospital in Waterville closed May 27, 2025.
+- Left out as unverified: MaineGeneral headcount; "15 nursing homes closed since 2020"; SafelyYou "80% fewer ER visits".
+
 ## Next
-- Healthcare and elder care (MaineGeneral Health, nursing homes, home care, aging data).
+- Manufacturing and food processing (Waterville/Augusta/Skowhegan plants; food processors; MEP data).
 - Human to-dos: optionally get a Census API key.
