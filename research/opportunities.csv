@@ -1,0 +1,5 @@
+id,industry,bottleneck,solution,impact,feasibility,months_to_pilot,cost_range,file
+FOR-1,Forestry,"Aging, shrinking logger workforce; deadliest US job","Remote-operated and assisted forwarders/harvesters",4,2,24,"$250k–$2M",industries/forestry.md
+FOR-2,Forestry,"Forest inventory and pest data slow; few remote-sensing staff","Drone + AI forest inventory and pest detection",4,4,6,"$5k–$50k",industries/forestry.md
+FOR-3,Forestry,"Mills must produce more with fewer workers","Computer vision log scaling and lumber grading for small/mid mills",3,4,6,"$10k–$150k",industries/forestry.md
+FOR-4,Forestry,"Paper sales down 41%; downtime costly","Predictive maintenance sensors for paper and packaging mills",3,3,9,"$20k–$200k",industries/forestry.md
