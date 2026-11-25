@@ -3,6 +3,35 @@
 Places to investigate further. Grouped by type, tagged by industry.
 
 ## Reports to read
+- [Colby & institutions] LBNL Smart Energy Analytics Campaign final report (fault detection savings by building type) — behind S374.
+- [Colby & institutions] NRDC/Bon Appétit plate waste report (2018), full methods — behind S373.
+- [Colby & institutions] Colby 2025 Economic Impact Report (Camoin Associates), read by hand; colby.edu blocks automated readers.
+- [Colby & institutions] Waterville FY2027 adopted budget, Public Works section.
+- [Fisheries] MITRE, Evaluation of On-Demand Gear Acoustic Interoperability Approaches (Aug 2025) [S311]. Cost and localization sections.
+- [Fisheries] American Lobster Settlement Index Update 2024 [S303].
+- [Fisheries] GMRI 2025 Gulf of Maine Temperature Report [S304].
+- [Fisheries] NIOSH Dangers of Entanglement During Lobstering (2005-137) [S317].
+- [Fisheries] Maine Aquaculture Association 2025 economic report, summarized in [S320] (full report not yet read).
+- [Fisheries] GMRI Maine Aquaculture Workforce Development Strategy full evidence report (2020), summarized in [S322].
+- [Fisheries] NOAA NEFSC three-year on-demand gear report (in progress per [S306]).
+- [Logistics] MaineDOT Truck & Bus Crash History 2020–2024 (newer edition of S255): check whether winter share changed.
+- [Logistics] FMCSA/VTTI 2010 low-cost driving behavior management report (S260): coaching protocol details.
+- [Logistics] FMCSA FAST DASH driver monitoring report, 2016 (S261).
+- [Logistics] USPS OIG "Package Delivery in Rural and Dense Urban Areas" (S258).
+- [Energy] CMP Climate Change Resilience Plan (cmpco.com would not load; read by hand): https://www.cmpco.com/documents/d/cmp/cmp-climate-change-resilience-plan-final-pdf
+- [Energy] Southern Maine Planning and Development Commission power outage report (2026), summarized in [S203].
+- [Energy] Cerrai, Watson, Anagnostou, tree trimming and storm outages, Electric Power Systems Research (2019) [S208].
+- [Energy] Innovasea white paper "AI-driven fish counting and species identification with demonstrated results" (linked from [S228]).
+- [Energy] Sandia snow and PV publications list [S217].
+- [Construction & roads] UMaine "Road Salt in Maine: An Assessment of Practices, Impacts and Safety" (2022), full report behind S150, incl. town-level well data.
+- [Construction & roads] Illinois Center for Transportation FHWA-ICT-26-008 (S166), full text: unit prices, per-plow salt, cost-effectiveness tables.
+- [Construction & roads] FHWA TechBrief FHWA-HRT-21-083 (S161) and the companion FHWA report "Collection of Data with UAS for Bridge Inspection and Construction Inspection".
+- [Construction & roads] TRIP "Keeping Maine Mobile" (S157) for regional pavement and bridge tables.
+- [Construction & roads] NASSCO PACP v8.0 notes on AI (S191).
+- [Agriculture] USDA NASS 2022 Census of Agriculture profiles: Maine [S100], Kennebec [S101], Somerset [S102]. Full county tables (herd sizes, hired labor) not yet read.
+- [Agriculture] UMaine 2024 potato industry economic contribution study ($1.3B, cited in [S115]). Not yet read.
+- [Agriculture] Camoin Associates, Economic and Fiscal Impacts of the Maine Wild Blueberry Industry (Oct 2023), cited in [S113]. Unpublished.
+- [Agriculture] Maine Farmland Trust dairy sector report (2020), on maine.gov (blocked to scripts; read by hand).
 - [Manufacturing] Industry 4.0 Smart Manufacturing for Maine market study (MTI-funded), summarized in [S57].
 - [Manufacturing] NIST AMS 100-41 cobot integration best practices [S64].
 - [Manufacturing] Maine DECD State of Food Processing report (2025; maine.gov blocks scripts, read by hand).
@@ -14,6 +43,40 @@ Places to investigate further. Grouped by type, tagged by industry.
 - [Forestry] 2021–2025 Maine State of the Forest report (review draft, Maine Forest Service). Not yet read: https://www.maine.gov/dacf/mfs/publications/general_publications/
 
 ## Organizations
+- [Colby & institutions] Colby Facilities (grounds, steam/biomass plant) and Office of Sustainability.
+- [Colby & institutions] Colby Dining Services / Parkhurst Dining.
+- [Colby & institutions] Davis Institute for AI (fellowships, student research roles).
+- [Colby & institutions] City of Waterville Public Works Department.
+- [Colby & institutions] Thomas College (CS, cybersecurity); KVCC workforce division.
+- [Colby & institutions] UMass Lowell RISE (campus drone thermal audits) as a model.
+- [Fisheries] Maine DMR Maine Innovative Gear Library [S310]; NOAA NEFSC Gear Research Team [S307].
+- [Fisheries] Gulf of Maine Research Institute [S304][S328]; UMaine Darling Marine Center [S325]; Maine Aquaculture Innovation Center [S326]; UMaine Lobster Institute [S303]; Maine Sea Grant.
+- [Fisheries] Gulf of Maine Lobster Foundation (eMOLT, ghost gear) [S337][S314]; OceansWide [S313]; Center for Coastal Studies [S314].
+- [Fisheries] Maine Lobstermen's Community Alliance [S310]; Maine Lobstermen's Association [S312]; Maine Aquaculture Association [S320].
+- [Fisheries] Bluesonde (Portland, low-cost farm sensors) [S325]; CVision AI (fisheries video AI) [S329].
+- [Logistics] Maine Motor Transport Association: driver recruiting, training grants, small-carrier members.
+- [Logistics] Hannaford / ADUSA Distribution, Winthrop DC.
+- [Logistics] MaineDOT Office of Safety & Mobility, crash records section.
+- [Logistics] Maine Connectivity Authority: cell coverage along freight routes.
+- [Logistics] Virginia Tech Transportation Institute: truck safety technology evaluations.
+- [Logistics] MnDOT MnROAD: model for a cold-weather AV testbed.
+- [Energy] Central Maine Power; Versant Power; Madison Electric Works and other consumer-owned utilities [S210].
+- [Energy] Maine DMR Bureau of Sea-Run Fisheries and Habitat (Benton Falls counts) [S225].
+- [Energy] The Nature Conservancy in Maine / Kennebec River Restoration Trust [S220][S221]; Brookfield Renewable [S225].
+- [Energy] UConn Eversource Energy Center (outage prediction) [S209].
+- [Energy] UMaine Advanced Structures and Composites Center [S232].
+- [Energy] KVCC Electrical Lineworker Technology program, Fairfield [S236].
+- [Energy] Maine Renewable Energy Association; ReVision Energy [S216].
+- [Construction & roads] MaineDOT Bridge Program; MaineDOT Maintenance & Operations (winter).
+- [Construction & roads] VHB (MaineDOT drone inspection consultant).
+- [Construction & roads] City of Waterville and Town of Winslow public works; Kennebec Sanitary Treatment District.
+- [Construction & roads] AGC Maine; Maine Community College System construction partnership.
+- [Construction & roads] UMaine Margaret Chase Smith Policy Center; Maine Municipal Association; Maine DEP wastewater program; NEIWPCC.
+- [Agriculture] Wild Blueberry Commission of Maine [S113]; UMaine wild blueberry drone research [S114]; Jasper Wyman & Sons [S114].
+- [Agriculture] UMaine Witter Farm robotic dairy barn [S106]; Maine Milk Commission [S104]; Maine Farmland Trust [S105].
+- [Agriculture] UMaine Aroostook Farm potato research lab [S115]; Maine Potato Board [S115].
+- [Agriculture] Backyard Farms, Madison (Mastronardi Produce) [S116].
+- [Agriculture] Maine DACF PFAS program [S108]; MOFGA [S109].
 - [Manufacturing] Maine MEP; UMaine Advanced Manufacturing Center; Roux Institute Smart Manufacturing Roadmap Program [S66]; ARM Institute [S62].
 - [Healthcare] Spectrum Generations [S50]; Maine Council on Aging [S54]; UMaine Center on Aging [S53]; Maine Health Care Association [S51]; MECEP [S38].
 - [Forestry] UMaine Maine-FOREST (NSF EPSCoR) [S12]; Wheatland Geospatial Lab [S30]; CRSF / CFRU [S16].
@@ -22,9 +85,35 @@ Places to investigate further. Grouped by type, tagged by industry.
 - [All] Colby Davis Institute for AI [S27].
 
 ## Events
+- [Colby & institutions] Davis Institute AI and the Liberal Arts Symposium (fall).
+- [Fisheries] (To find) Maine Fishermen's Forum (DMR science updates); Northeast Aquaculture Conference & Exposition; Jonesport-style on-demand gear demonstrations [S308].
+- [Logistics] National Truck Driver Appreciation Week (MMTA activities in Maine).
+- [Logistics] MHI ProMat / MODEX trade shows for warehouse robotics.
+- [Energy] Spring sea-run fish migration at Benton Falls and Lockwood (counts run May–early November) [S225].
+- [Construction & roads] MaineDOT annual winter readiness media event (November) — confirm current fleet and salt figures.
+- [Agriculture] (To find) Maine Agricultural Trades Show (January, Augusta); Wild Blueberry Commission December meeting [S111]; UMaine Witter Farm open days.
 - (To find) PLC annual meeting; Maine Forest Products Council events; UMaine forestry field days.
 
 ## Grants and funding
+- [Colby & institutions] Efficiency Maine C&I Custom technical assistance: 50% of study cost up to $25,000 (S378).
+- [Colby & institutions] Davis Institute faculty and student fellowships (amounts unverified).
+- [Colby & institutions] Maine Technology Institute seed grants for a grounds-robot or food-waste spinout.
+- [Fisheries] NSF Seafood Engine, $15M over 2 years, up to $160M over 10 [S325].
+- [Fisheries] NOAA/NFWF gear innovation funds (Maine DMR got $5.1M) [S310][S311].
+- [Fisheries] USDA Northeast SARE farmer grants (Ferda Farms got $21,268) [S324].
+- [Fisheries] Federal infrastructure funds for ghost gear removal (>$2.7M to coalition) [S314].
+- [Logistics] FMCSA safety technology and research programs.
+- [Logistics] USDOT University Transportation Centers (winter mobility research).
+- [Logistics] Maine Technology Institute (MTI) seed and development grants.
+- [Energy] Maine Technology Institute (supported UMaine DeepCwind) [S232].
+- [Energy] NOAA restoration and fish passage funding; DOE grid resilience programs (not yet researched).
+- [Construction & roads] Maine Technology Institute grants (see S25).
+- [Construction & roads] FHWA State Planning & Research funds via MaineDOT research program (to check).
+- [Construction & roads] Clean Water State Revolving Fund through Maine DEP (to check eligibility for inspection tech).
+- [Agriculture] Wild Blueberry Commission $1.3M grant program; ~$2.69M USDA specialty crop funds [S112].
+- [Agriculture] Proposed LD 299 (up to $5M/yr farmer grants and loans) and agricultural bond LD 2094 [S113].
+- [Agriculture] State PFAS funds, "tens of millions of dollars" earmarked [S108].
+- [Agriculture] USDA SBIR; MTI.
 - [Manufacturing] MTI (funded the Industry 4.0 study [S57]); MEP cost-shared projects [S60]; ARM Institute project calls [S62].
 - [Healthcare] NIH/NIA SBIR for aging tech; EDA (funded the ND medical drone trial [S49]); state aging funds (NY bought 800+ ElliQ devices [S46]).
 - [Forestry] Maine Technology Institute (MTI); EDA Forest Bioproducts Tech Hub, $20M, UMaine-led, MTI gives vouchers and grants [S25].
@@ -32,10 +121,43 @@ Places to investigate further. Grouped by type, tagged by industry.
 - [All] USDA, NSF REU and SBIR/STTR (to research per industry).
 
 ## Courses and skills
+- [Colby & institutions] Colby 300-level computer vision sequence (S360).
+- [Colby & institutions] FAA Part 107 remote pilot certificate (S31) for thermal and tree-inventory flights.
+- [Colby & institutions] KVCC heat pump / high-pressure boiler courses (S368) to learn campus HVAC basics.
+- [Fisheries] Underwater acoustics and sonar signal processing (FISH-1).
+- [Fisheries] Marine electrical systems and embedded vision (FISH-2).
+- [Fisheries] Shellfish farming basics; Darling Marine Center student programs [S325].
+- [Logistics] Computer vision for driving: lane detection, monocular distance estimation.
+- [Logistics] Warehouse operations and industrial engineering basics (pick paths, cycle counting).
+- [Energy] FAA Part 107 remote pilot certificate [S31].
+- [Energy] KVCC lineworker certificate, for field context [S236].
+- [Construction & roads] FAA Part 107 remote pilot certificate (S31).
+- [Construction & roads] NASSCO PACP certification (needed to judge sewer AI output).
+- [Agriculture] Pose estimation for animals (Wageningen T-LEAP approach [S122]); drone thermal remote sensing [S114]; FAA Part 107 remote pilot certificate [S31].
 - [Forestry] FAA Part 107 remote pilot certificate [S31]; needed for any commercial or research drone flying.
 - [Forestry] ROS 2 tutorials (for FOR-1 prototype).
 
 ## Datasets
+- [Colby & institutions] Colby building automation trend logs (request from Facilities).
+- [Colby & institutions] Public food image datasets for training a waste classifier (to identify).
+- [Colby & institutions] Perkins Arboretum ground plots (to be collected).
+- [Fisheries] Maine DMR landings data (maine.gov blocks scripts; DMR GovDelivery bulletins work) [S301].
+- [Fisheries] eMOLT bottom temperature and oxygen data, public and free [S337].
+- [Fisheries] ALSI young-of-year lobster settlement time series [S303].
+- [Fisheries] NOAA OISST sea surface temperature (basis of GMRI report) [S304].
+- [Logistics] FRED Maine transportation and warehousing employment (SMU23000004340008901SA).
+- [Logistics] BLS SOII warehousing injury rates (NAICS 493).
+- [Logistics] MaineDOT truck crash tables (county, month, road surface, driver action).
+- [Logistics] Open winter driving datasets (e.g., Canadian Adverse Driving Conditions) — not yet verified.
+- [Energy] EIA Electric Power Annual Table 11.3, state SAIDI/SAIFI [S200].
+- [Energy] EIA State Electricity Profile tables for Maine (capacity, generation, reliability, small-scale solar) [S201].
+- [Energy] EIA Form 861 utility-level reliability data (not yet downloaded).
+- [Energy] Maine DMR trap count statistics and 2015–2025 archive PDFs [S225].
+- [Energy] CMP storm cost filings with Maine PUC [S204].
+- [Construction & roads] FHWA National Bridge Inventory Maine file (filter Kennebec County, owner type).
+- [Construction & roads] Maine DEP chloride-impaired stream list and well chloride records (via S150 report).
+- [Agriculture] USDA NASS Quick Stats (county-level Census data) [S100].
+- [Agriculture] Public lameness video sets from the Wageningen study, if released [S122] (unverified).
 - [Manufacturing] FRED/BLS Maine manufacturing employment series MEMFG [S55] (fred.stlouisfed.org is script-friendly via its API with a free key).
 - [Healthcare] CDC NCHS fall death data by state [S43]; America's Health Rankings senior measures [S37][S42]; BLS injury snapshots by occupation [S44].
 - [Healthcare] Public fall-detection datasets (to find) for HC-1/HC-2 student projects.
@@ -45,6 +167,35 @@ Places to investigate further. Grouped by type, tagged by industry.
 - [Forestry] Maine GeoLibrary / state LiDAR coverage (to check).
 
 ## Open questions worth answering
+- [Colby & institutions] Does Parkhurst already measure kitchen waste by item at Colby?
+- [Colby & institutions] Which building control system does Colby use, and can trend data be exported?
+- [Colby & institutions] How many sidewalk miles does Waterville plow, and with how many staff?
+- [Colby & institutions] Does Waterville have an emerald ash borer or street-tree plan?
+- [Colby & institutions] Which vendor (if any) replaces Starship at campuses after 2027, and does a small college ever pencil out?
+- [Fisheries] How many Maine lobster boats fish solo, with no sternman?
+- [Fisheries] Will DMR share anonymized gear-library failure and haul data?
+- [Fisheries] How many traps are on the Maine seafloor? Estimates are rough and conflict [S313][S314].
+- [Fisheries] What is Maine's farmed Atlantic salmon value (DMR keeps it confidential)?
+- [Fisheries] Current lease and acreage totals (Sea Grant leasing guide could not be read).
+- [Logistics] How many Maine carriers run fewer than 10 trucks, and how many already use dash cams?
+- [Logistics] Is truck driver fatigue underreported in Maine police crash reports (1.2% recorded)?
+- [Logistics] What does Maine law allow for autonomous truck testing?
+- [Logistics] Hannaford Winthrop headcount and automation plans.
+- [Logistics] When does the Waterville Amazon station open, and will it use local contracted drivers like Caribou?
+- [Energy] What share of CMP and Versant outages are tree-caused today, and how much do they spend on trimming?
+- [Energy] How does DMR count fish at Benton Falls now (manual, video, counter)?
+- [Energy] Will fish counting continue at Lockwood after the transfer to KRRT (expected mid-2026) [S223]?
+- [Energy] How large are measured winter snow losses at Maine community solar farms?
+- [Energy] Is there a measured Maine line worker shortage?
+- [Construction & roads] How many tons of salt does each MaineDOT and Waterville-area town plow spread per year? (sets sensor payback, S166)
+- [Construction & roads] Current MaineDOT lane miles, truck count, and vacancy rate (maine.gov pages could not be read).
+- [Construction & roads] How many Kennebec County bridges are town-owned, and who inspects them?
+- [Construction & roads] Does any Maine town already use AI road-scanning apps?
+- [Construction & roads] How many miles of sewer video does Kennebec Sanitary Treatment District record each year, and is it coded?
+- [Agriculture] How many dairy farms remain in Kennebec County, and what are their herd sizes and barn types (tie-stall vs parlour)?
+- [Agriculture] How accurate are UMaine's drone yield and water-stress models for wild blueberries [S114]?
+- [Agriculture] Is field sampling or lab capacity the real limit on Maine PFAS farm testing [S108]?
+- [Agriculture] Current Backyard Farms headcount and openness to a scouting pilot.
 - [Forestry] What is cell/LTE coverage like on active Kennebec/Somerset harvest sites? Decides FOR-1 feasibility.
 - [Forestry] Do small Maine sawmills already scale logs by camera? Ask 3 mills.
 - [Forestry] What does Maine-FOREST need from students: labeling, field data, model work?

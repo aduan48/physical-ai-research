@@ -1,6 +1,8 @@
 # Manufacturing and Food Processing
 
 > **Key takeaway:** Maine has about 51,300 manufacturing jobs, down from 59,400 in 2006 [S55]. A state-funded study found Maine firms lag on automation [S57]. The proven, ready-now win is **AI optical sorting on food packing lines**: a Maine blueberry packer got 4× the throughput with about half the labor [S60]. **Collaborative robots (cobots)** for small shops are the broadest opportunity near Waterville, and there's already a support network to deliver them (Maine MEP, UMaine, Roux) [S66].
+>
+> **Biggest competitor gap:** small seasonal food packers. Sorter makers build for the largest processors [S430], and payback collapses on short seasons [S61]. A low-cost, Maine-trained vision add-on is open (author analysis; see section 4).
 
 Ratings and cost ranges below are **the author's judgment**, not sourced figures. Paper and packaging mills (Sappi, Huhtamaki) are covered in [forestry.md](forestry.md).
 
@@ -99,7 +101,52 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 4. What's needed
+## 4. Competitors and our edge
+
+**Takeaway:** The hardware is sold by large global firms (Universal Robots, FANUC, TOMRA, Key, Marel). What they don't sell is **application work for small Maine plants**: setting up the first cell, or a sorter that pays back on a short season. That gap, not a new machine, is where a Colby effort could help.
+
+### MFG-1 · Cobots for small manufacturers
+
+| Competitor / existing player | What they do | Where they fall short for central Maine | Source |
+|---|---|---|---|
+| Universal Robots | Cobot arms (UR3e to UR30). | No public prices. Full cost adds tooling, vision, integration, safety, and training; buyers need an integrator's estimate. | [S427] |
+| FANUC (CRX series) | 11 CRX cobot lines, incl. food-grade models; drag-and-drop programming on a touchscreen pendant. | Price by quote only. Easy programming still needs someone to plan the cell (author analysis). | [S433] |
+| Cobot buyers elsewhere (e.g. Kay Manufacturing) | First cobot under $50k, running in 30 days, ~$150k saved. | One Illinois success story. | [S63] |
+| Maine MEP, UMaine AMC, Roux Institute (enablers) | Vendor-neutral roadmaps and implementation help; B.O.T. Loft robotics training. | Partners, not competitors. The barrier they face is leaders' low awareness of automation [S57]. | [S66][S1][S57] |
+
+**Our edge:**
+- Cobot arms are a commodity [S427][S433]. The gap is **the first application** at a small shop: picking the task, timing it, and estimating payback (author analysis).
+- Maine leaders "lack awareness" of digital tools [S57]. A student who builds a working demo and a payback sheet helps close that gap.
+- Work through Maine MEP and Roux [S66], not against them. They have the shop relationships.
+
+### MFG-2 · AI optical sorting for wild blueberry and produce packing
+
+| Competitor / existing player | What they do | Where they fall short for central Maine | Source |
+|---|---|---|---|
+| TOMRA | Blueberry line: Neon pre-grader, 5S Blueberry sorter with LUCAi AI, Blizzard for frozen berries. | Page does not address wild vs. cultivated berries [S428]. Neon targets machine-harvested fresh berries [S428]. | [S428] |
+| Key Technology (VERYX, Optyx) | Optical sorters for fresh and frozen blueberries. Quebec Wild Blueberries sorts up to 9 t/hour and doubled throughput with the same workers. | Its reference is "one of the largest blueberry processors in the world" [S430]. Support is remote from Walla Walla, WA [S430]. | [S429][S430][S65] |
+| BerryTek and Impulse sorters | Fresh wild blueberry sorters; Nova Scotia trial cut sorting labor 56.75%. | Payback ~10 years at 12 hours/day vs. <1 year at 24 hours/day. Short seasons hurt. | [S61] |
+| Maine MEP + UMaine AMC (enablers) | Helped Brodis Blueberries buy a $125k+ sorter: 4× volume, about half the labor. | Partners, not competitors. | [S60] |
+
+**Our edge:**
+- Sorters are built for the largest processors [S430]. For small packers, payback depends on hours run [S61]. A **low-cost camera add-on** for an existing line could fit a short season (author analysis).
+- A labeled image set of Maine wild blueberries (defects, debris, bloom) would help any vendor or packer. None is public (author analysis).
+- Maine MEP and UMaine AMC already did one install [S60]. They are a ready channel to other packers.
+
+### MFG-3 · Cobots and vision for seafood handling and quality checks
+
+| Competitor / existing player | What they do | Where they fall short for central Maine | Source |
+|---|---|---|---|
+| JBT Marel (FleXicut) | X-ray pinbone removal and portioning for salmon; 36 fillets/min; 1,600 kg machine. | Built for salmon fillet lines. Fit to Maine species (lobster, scallops) not shown (author analysis). No price published. | [S431] |
+| ARM Institute FISH project (Northeastern University lead) | Collaborative robot station for fish handling and inspection; aimed for human-level speed and accuracy. | Completed 2019, but no measured results on the project page; "$20B" impact is an estimate. | [S432][S62] |
+
+**Our edge:**
+- Big-line machines target high-volume fillet plants [S431]. Research has not reported results [S432]. Small Maine processors are not served by either (author analysis).
+- A vision grading model for a Maine product (scallops, fish fillets) is a cheap first step. Northeastern's Roux Institute in Portland is a natural partner [S66][S62].
+
+---
+
+## 5. What's needed
 
 | | MFG-1 Cobots | MFG-2 Optical sorting | MFG-3 Seafood robots |
 |---|---|---|---|
@@ -113,7 +160,7 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 5. Start small (student projects)
+## 6. Start small (student projects)
 
 - **MFG-1 (best first project):** Use a low-cost desktop robot arm and a webcam to sort parts by color or shape. Then visit one Waterville-area shop (via Maine MEP) and time one repetitive task. Estimate the cobot payback.
 - **MFG-2:** Photograph good and bad blueberries (or any fruit). Train a small image classifier. Report accuracy and false rejects, the two numbers that matter in [S61].
@@ -121,7 +168,7 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 6. Who to contact (organizations and public roles only)
+## 7. Who to contact (organizations and public roles only)
 
 - **Support network:** Maine Manufacturing Extension Partnership (Maine MEP) [S57][S60]; UMaine Advanced Manufacturing Center, incl. its B.O.T. Loft robotics training space [S1][S60]; Roux Institute Smart Manufacturing Roadmap Program [S66].
 - **Companies:** New Balance Skowhegan factory [S56]; Brodis Blueberries (Hope) as a model adopter [S60].
@@ -130,7 +177,7 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 7. Risks and open questions
+## 8. Risks and open questions
 
 - **Payback depends on hours run:** sorters pay back in <1 year at 24 h/day but ~10 years at 12 h/day [S61]. A short harvest season limits use.
 - **Leaders, not tools, may be the barrier:** the Industry 4.0 study points to awareness and culture [S57].
@@ -140,10 +187,10 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 8. Sources
-All in [`../sources.md`](../sources.md). This file uses S1, S27, S55–S66.
+## 9. Sources
+All in [`../sources.md`](../sources.md). This file uses S1, S27, S55–S66, S427–S433.
 
-## 9. Dig deeper
+## 10. Dig deeper
 - Read the full Industry 4.0 market study (linked from [S57] on the Maine MEP site).
 - Ask Maine MEP for Kennebec/Somerset success stories with cobots or vision.
 - Find Maine food-processing job data (Maine DECD's 2025 food processing report; site blocks scripts, so read by hand).

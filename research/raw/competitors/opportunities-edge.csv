@@ -1,0 +1,13 @@
+id,competitors,edge
+FOR-1,Ponsse;Komatsu Forest;John Deere;Skogforsk/SCA 5G trial partners,OEMs sell in-cab assist only; low-cost staged teleop/assist retrofit for older Maine machines
+FOR-2,DJI Enterprise;Treeswift;Pix4D;UMaine Maine-FOREST/Wheatland Lab,Turnkey fly-count-report service on Maine species for owners who lack remote-sensing staff
+FOR-3,MiCROTEC/Lucidyne;USNR;BID Group/Comact;Roboflow,Cheap one-camera log-yard scaling with published accuracy for small mills big scanners skip
+FOR-4,Emerson;SKF;Augury;ADI OtoSense,Crowded; independent benchmarking of cheap sensors vs vendor systems
+HC-1,Vayyar/Walabot Home;Lifeline;ElliQ;UNSW radar research,Open Maine-tested false-alarm benchmark run with a home care agency
+HC-2,SafelyYou;Nobi;Vayyar Care,Mature market; independent pilot evaluation at a small Maine nursing home
+HC-3,Arjo ceiling lifts;mechanical lift makers;RIKEN RIBA-II,"Low-cost sensors that get existing lifts used, not robots"
+HC-4,Diligent Moxi;ST Engineering Aethon TUG/ZenaRx,Mature market; time-and-motion payback study for MaineGeneral
+HC-5,Zipline;DroneUp;UND trial partners,Waterville-Augusta winter route and cost study; big players start in metros
+MFG-1,Universal Robots;FANUC CRX;Maine MEP/Roux/UMaine AMC (enablers),"First-application demo and payback sheet for small shops, via Maine MEP"
+MFG-2,TOMRA;Key Technology;BerryTek/Impulse,Low-cost vision add-on and Maine wild-berry dataset for small seasonal packers
+MFG-3,JBT Marel;ARM Institute FISH (Northeastern),Vision grading for Maine species where fillet machines and research don't reach

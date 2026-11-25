@@ -1,6 +1,8 @@
 # Healthcare and Elder Care
 
 > **Key takeaway:** Maine is the oldest state in the U.S. [S36][S37], and care is running short. Home care goes unstaffed for 23,500 approved hours a week, with Kennebec and Somerset among the hardest-hit counties [S38]. Waterville lost its hospital in 2025 [S39]. The best physical AI bets are **sensors that catch falls fast**, in homes (HC-1) and in nursing homes (HC-2). They stretch a small care workforce, and they target a fall death rate nearly double the U.S. rate [S43].
+>
+> **Biggest competitor gap:** in-home fall detection for rural home care. Radar and pendant makers sell mainly to facilities or families and publish no accuracy data [S413][S414][S415]. An open, Maine-tested benchmark run with a home care agency is open (author analysis; see section 4).
 
 Ratings and cost ranges below are **the author's judgment**, not sourced figures. Each has a one-line reason.
 
@@ -138,7 +140,77 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 4. What's needed
+## 4. Competitors and our edge
+
+**Takeaway:** Every opportunity here already has paying players. But most sell to **large senior-living chains and big health systems**, and most publish **no independent accuracy data**. The best opening is in-home fall detection for rural home care (HC-1), tested openly in Maine homes. HC-2 and HC-4 are mature markets where a student role is evaluation, not competition.
+
+### HC-1 · Privacy-preserving in-home fall detection and check-ins
+
+| Competitor / existing player | What they do | Where they fall short for central Maine | Source |
+|---|---|---|---|
+| Vayyar (Walabot Home; Vayyar Care) | Wall-mounted radar, no camera, detects falls. Walabot Home launched at $249 (2018). Vayyar Care is sold to senior-living operators through nurse-call partners. | Calls itself "exceptionally accurate" but gives no accuracy data [S413]. Main channel is facilities, not home care agencies [S413]. | [S412][S413] |
+| Lifeline (medical alert) | Pendant and watch alarms with optional AutoAlert fall detection; U.S. response centers. | "Does not detect 100% of falls"; users should press the button. Mobile units need cellular coverage. Setup fees $50 + $49.95 [S414]. Accuracy data has long been criticized as unpublished [S415]. Only works if worn (author analysis). | [S414][S415] |
+| ElliQ (Intuition Robotics) | AI companion device; New York State gave it to 800+ older adults. $39–$59/month plus a $249 lease fee. | Needs home Wi-Fi [S416]; about 22,000 Maine locations still have under 100/20 Mbps internet [S417]. Targets loneliness, not falls. Results self-reported, no control group [S46]. | [S416][S417][S46] |
+| UNSW Sydney radar research | mmWave radar fall prediction in aged care facilities. | Research, in Australian facilities, not homes. | [S47] |
+
+**Our edge:**
+- No vendor here publishes false-alarm or missed-fall rates [S413][S414][S415]. An **open, Maine-tested benchmark** of low-cost radar is a credible student contribution.
+- Pair the sensor with a home care agency's workflow (Spectrum Generations [S50]) so alerts route to someone who can respond. Vendors sell to facilities or to families, not to agencies short 23,500 hours a week [S38] (author analysis of [S38][S413]).
+- Camera-free radar fits bathrooms and bedrooms where cameras are unacceptable [S412][S47].
+- Test in real Maine housing (older, small homes; winter months indoors) where vendors have not published results (author analysis).
+
+### HC-2 · AI video fall detection in nursing homes and memory care
+
+| Competitor / existing player | What they do | Where they fall short for central Maine | Source |
+|---|---|---|---|
+| SafelyYou | AI video fall detection; says 1,000+ communities and 50,000 residents, and "80% of the largest senior living providers". Peer-reviewed study showed 29.6 min less time on the ground. | Most outcome figures come from its own analytics [S418]. The study had vendor co-authors [S45]. Built around large chains (author analysis of [S418]). | [S418][S45] |
+| Nobi (Belgium) | Smart ceiling lamps with vision AI that alert staff to falls; $37M Series B (2025). | No measured outcomes reported; used in nursing homes and long-term care. | [S419] |
+| Vayyar Care | Radar fall detection for senior living, integrated with nurse-call systems. | No published accuracy data. | [S413] |
+
+**Our edge:**
+- This is a mature market led by SafelyYou [S418]. Competing head-on is not realistic (author analysis).
+- Maine has lost 51 nursing homes [S51]. The ones left are often small and independent. Helping one **pilot and independently measure** an existing product is the useful role (author analysis).
+- An independent before/after evaluation would add evidence that is now mostly vendor-made [S45][S418].
+
+### HC-3 · Robotic and sensor-assisted patient lifting
+
+| Competitor / existing player | What they do | Where they fall short for central Maine | Source |
+|---|---|---|---|
+| Ceiling lift makers (e.g. Arjo Maxi Sky) | Ceiling lifts let one caregiver transfer a patient; portable Maxi Sky 440 lifts up to 200 kg. | Needs a ceiling track or gantry [S421]. Purchase cost, installation, time, and staff acceptance are known barriers [S420]. | [S421][S420] |
+| Overhead lifts in general (NIOSH study) | Overhead lifts need much lower push/pull forces than floor lifts. | Evidence that they cut injury *rates* is mixed; some studies show cost drops but not fewer injuries. | [S420] |
+| RIKEN RIBA-II | Research robot that lifts patients up to 80 kg. | A 2011 research prototype; field testing still planned. | [S48] |
+
+**Our edge:**
+- Robots are not ready [S48], and mechanical lifts already exist [S421]. The gap is **getting lifts used**: cost, time, and acceptance [S420].
+- A cheap sensor that reminds staff to use the lift, or warns when a patient is about to get up alone, fits small Maine facilities better than a robot (author analysis).
+
+### HC-4 · Autonomous hospital delivery robots
+
+| Competitor / existing player | What they do | Where they fall short for central Maine | Source |
+|---|---|---|---|
+| Diligent Robotics (Moxi) | Hospital delivery robot in 25 U.S. hospitals; 1.3M+ deliveries (company figures). | Company figures only. | [S52] |
+| ST Engineering Aethon (TUG, ZenaRx) | TUG used in 150+ hospitals (2017). ZenaRx (2024) has locked drawers for drugs and lab samples, runs 10 hours. | No integration needs (elevators, network) published [S423]. The 2017 hospital count may be out of date [S422]. | [S422][S423] |
+
+**Our edge:**
+- This is a mature, vendor-led market [S52][S422]. There is no product gap for a student to fill (author analysis).
+- The useful role is a **time-and-motion study** at MaineGeneral, showing whether a robot would pay off for a mid-size system. Vendors publish only their own figures [S52].
+
+### HC-5 · Drone delivery of lab samples and medications
+
+| Competitor / existing player | What they do | Where they fall short for central Maine | Source |
+|---|---|---|---|
+| Zipline | Home delivery drone: 10-mile radius, up to 8 lb. Advocate Health plans 100,000+ deliveries a year starting 2027 in Charlotte. | Tests for "rain, wind, storms, cold"; snow is not mentioned [S424]. Launch partners are large systems in big metros [S425]. | [S424][S425] |
+| DroneUp | Walmart drone delivery. In 2024 closed 18 hubs and cut 70 staff. | Cost was about $30 per package vs. a target under $7 [S426]. Unit economics are unproven. | [S426] |
+| University of North Dakota trial | 80-mile rural medical delivery in ~35 minutes, EDA-funded. | A trial, not a running service. | [S49] |
+
+**Our edge:**
+- Big players start in big metros [S425]. Rural Maine, with long winters, is not on their maps (author analysis).
+- A student can map a Waterville–Augusta route with real winter weather data. That shows whether drones beat a courier here, before anyone buys a drone (author analysis).
+- Cost per flight is the open question [S426]. A route study answers it locally.
+
+---
+
+## 5. What's needed
 
 | | HC-1 Home sensors | HC-2 Facility fall AI | HC-3 Lifting | HC-4 Hospital robots | HC-5 Drones |
 |---|---|---|---|---|---|
@@ -152,7 +224,7 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 5. Start small (student projects)
+## 6. Start small (student projects)
 
 - **HC-1 (best first project):** Buy a low-cost mmWave radar development board. Stage 200 falls and 200 "sit-downs" on a mat (with a crash pad). Train a classifier and report false-alarm rate. This directly tests the main weakness.
 - **HC-2:** Train a pose-estimation fall detector on a public fall dataset. Measure detection delay in seconds.
@@ -162,7 +234,7 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 6. Who to contact (organizations and public roles only)
+## 7. Who to contact (organizations and public roles only)
 
 - **Aging services:** Spectrum Generations, Central Maine Area Agency on Aging (Waterville and Hallowell centers) [S50]; Maine Council on Aging [S54].
 - **Care providers:** MaineGeneral Health (Augusta; Thayer campus, Waterville) [S40]; Northern Light Lakewood long-term care, Waterville [S39]; Maine Health Care Association (nursing home trade group) [S51].
@@ -172,7 +244,7 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 7. Risks and open questions
+## 8. Risks and open questions
 
 - **Privacy and dignity:** Cameras in bedrooms are sensitive. Radar avoids images, but still collects personal data.
 - **Who responds?** An alert is useless if no one can come. Pair any sensor pilot with a response plan.
@@ -182,10 +254,10 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 8. Sources
-All in [`../sources.md`](../sources.md). This file uses S27, S31, S36–S54.
+## 9. Sources
+All in [`../sources.md`](../sources.md). This file uses S27, S31, S36–S54, S412–S426.
 
-## 9. Dig deeper
+## 10. Dig deeper
 - Read the full MECEP direct care report behind [S38], including its county tables.
 - Read the full Maine Nursing Action Coalition forecast behind [S41].
 - Ask Spectrum Generations whether clients would accept a radar sensor pilot.

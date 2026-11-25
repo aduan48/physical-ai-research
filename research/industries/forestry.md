@@ -1,6 +1,8 @@
 # Forestry, Logging, Sawmills, Paper and Wood Products
 
 > **Key takeaway:** Maine's forest economy is big ($8.3B output [S1]) but is losing workers [S1][S5][S34]. The best near-term physical AI bet is **drone + AI forest inventory**: research is already underway at UMaine with Colby as a partner [S12][S13][S14], and the hardware is cheap. The highest-impact but hardest bet is **remote-operated logging machines**, which Sweden is already testing [S18][S19].
+>
+> **Biggest competitor gap:** small mills and woodlot owners. Scanner makers sell full grading lines to large mills [S22][S407], and drone-inventory startups serve large timber firms [S404]. Low-cost, Maine-trained log-yard vision and inventory is open (author analysis; see section 4).
 
 Ratings and cost ranges below are **the author's judgment**, not sourced figures. Each has a one-line reason.
 
@@ -138,7 +140,72 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 4. What's needed
+## 4. Competitors and our edge
+
+**Takeaway:** Big equipment makers already sell most of these tools, but to big buyers. Machine makers sell in-cab assist, not remote operation. Scanner makers sell full grading lines to large mills. The clearest opening is **low-cost, Maine-trained vision and inventory for small mills and woodlot owners** (FOR-2, FOR-3). FOR-4 is the most crowded.
+
+### FOR-1 · Remote-operated and assisted logging machines
+
+| Competitor / existing player | What they do | Where they fall short for central Maine | Source |
+|---|---|---|---|
+| Ponsse | Harvester Active Crane: the operator steers the harvester head, not each crane joint. Needs the Opti 5G control system. | Driver assist in the cab, not remote operation. "Currently available in the Scorpion product range's harvesters in certain market areas." | [S402] |
+| Komatsu Forest | Smart Crane on forwarders: grapple run with three joystick movements; boom extension automated. | Still an operator in the cab; no remote mode described. Comes with a new machine, so it does not help older fleets (author analysis). | [S400] |
+| John Deere | Intelligent Boom Control: the operator moves the head and the system guides the boom (first on the 1270G, CH7 boom). | Same: assist only, and only on certain new models and booms. | [S401] |
+| Skogforsk lab + SCA, Ericsson, Telia, Volvo CE, Mid Sweden University | Drove a forwarder from ~90 km away over 5G; VR remote crane tests. | Needed a drone-carried 5G base station to fill a coverage gap [S18]. Latency over ~200 ms broke crane control [S19]. Maine woods have no such private networks (author analysis). | [S18][S19] |
+| SLU (Sweden) | Model: one teleoperator running several forwarders cuts extraction cost 7–15%. | Simulation of Swedish harvest sites, not Maine stands or contractors. | [S20] |
+
+**Our edge:**
+- No major maker offers true remote operation yet. Their products are in-cab assist [S400][S401][S402]. A low-cost assist or teleop retrofit for machines Maine contractors already own is open (author analysis).
+- Maine contractors run on thin margins [S10], so a $250k+ remote system is a hard sell. A cheap, staged path (cameras and assist first, remote later) fits them better (author analysis).
+- The key research question, how much latency and bandwidth an operator can tolerate [S19], can be studied on a small scale model at Colby before any field work.
+- Honest limit: this is the weakest edge in the file. Real progress needs an OEM or dealer partner.
+
+### FOR-2 · Drone + AI forest inventory and pest detection
+
+| Competitor / existing player | What they do | Where they fall short for central Maine | Source |
+|---|---|---|---|
+| DJI Enterprise | Matrice 400 drone with Zenmuse L3 LiDAR; DJI Terra builds point clouds. Rated to −20 °C. | Sells hardware and generic point clouds. Forest analysis is left to "third-party software". No species identification is mentioned. | [S406] |
+| Treeswift (UPenn GRASP Lab spin-out, Philadelphia) | Under-canopy LiDAR drones (SwiftCruise) for timber and carbon inventory. $4.8M seed round (2022). | Customers named are large industrial timber firms (Weyerhaeuser, Molpus, Superior Pine) [S404]. No Maine deployment found (author analysis). | [S403][S404] |
+| Pix4D | Photogrammetry software. A Quebec study used it to outline tree crowns and tell conifer from deciduous. | One 2018 study, two classes only [S405]. Needs a skilled operator, and Maine owners name staff capacity and knowledge as the main barriers [S15]. | [S405][S15] |
+| UMaine Maine-FOREST and Wheatland Geospatial Lab | Under-canopy AI drones; LiDAR-based Enhanced Forest Inventories. | Under-canopy work is still "preliminary" research [S12]. A partner more than a competitor. | [S12][S30] |
+
+**Our edge:**
+- The gap is not drones but **people and analysis**. Maine forest owners already use LiDAR (67%) but lack staff and know-how [S15]. A turnkey "fly, count, report" service fills that gap (author analysis).
+- Colby is already funded to build AI for forest data with UMaine [S13][S14]. That gives access to Maine ground-truth plots no outside vendor has.
+- Treeswift serves large timber companies [S404]. Smaller Maine owners are likely below its focus (author analysis).
+- Models tuned to Maine species (spruce, fir, northern hardwoods) and to spruce budworm damage [S17] would beat generic tools (author analysis).
+
+### FOR-3 · Computer vision for log scaling and lumber grading
+
+| Competitor / existing player | What they do | Where they fall short for central Maine | Source |
+|---|---|---|---|
+| MiCROTEC (Lucidyne) | Deep-learning lumber grading at up to 4,500 ft/min; AI strength grading at 240 boards/min. | Built for high-speed lines at large mills (Hampton Lumber, Oregon; Södra, Sweden) [S21][S35]. Too big for small Maine mills (author analysis). | [S21][S22][S35] |
+| USNR | Automated grading (BioVision, Transverse and Lineal High Graders) with deep-learning defect detection. | Full-line mill systems; no price published. Reference mill is in North Carolina. | [S407] |
+| BID Group (Comact brand) | ResawExpert: AI resaw optimizer that grades all four board faces, incl. NHLA hardwood grades. | Brand new; first install at one Quebec flooring maker. Resaw-line equipment, not a cheap add-on. | [S408] |
+| Roboflow (DIY vision platform) | Camera-based log scaling from truck cameras or a phone. | No accuracy data published. The mill must build and label its own model (author analysis). | [S23] |
+
+**Our edge:**
+- Incumbents sell full grading lines to big mills [S22][S35][S407]. **Log-yard scaling for small and mid-size mills** is the open niche: one camera, one edge computer (author analysis).
+- No vendor publishes accuracy for camera log scaling [S23]. A student project that measures accuracy against scale tickets would itself be useful.
+- A labeled image set of Maine logs (species, bark, snow and ice on logs in winter) is something no national vendor has (author analysis).
+
+### FOR-4 · Predictive maintenance sensors for paper and packaging mills
+
+| Competitor / existing player | What they do | Where they fall short for central Maine | Source |
+|---|---|---|---|
+| Emerson | Online vibration monitoring; caught a bad roller bearing, ~$40k downtime avoided. | Vendor case study only. | [S24] |
+| SKF | Enlight Collect IMx-1 wireless vibration and temperature sensor; mesh network; 4-year battery. Data can go to SKF's cloud analysis centers. | Tied to SKF's own service model. Evidence is vendor-written. | [S409] |
+| Augury | Full-stack machine health for pulp and paper (named customer: Essity). Claims 3–10× first-year ROI and >99% accuracy. | All figures are vendor claims. | [S410] |
+| Analog Devices (OtoSense Smart Motor Sensor) | Turnkey motor sensor with app and web dashboard; 0–10 health score. | Vendor-only evidence; cloud dashboard means mill IT approval (author analysis). | [S411] |
+
+**Our edge:**
+- This market is crowded with large, credible vendors [S24][S409][S410][S411]. A new product is unlikely to win (author analysis).
+- The realistic role is **independent testing**: comparing a cheap sensor to a vendor system on one line, since all published results are vendor-written [S24][S410].
+- Sappi Somerset and Huhtamaki are near Colby [S8][S9], which helps access, but they likely already use vendor systems (author analysis).
+
+---
+
+## 5. What's needed
 
 | | FOR-1 Remote logging | FOR-2 Drone inventory | FOR-3 Mill vision | FOR-4 Mill sensors |
 |---|---|---|---|---|
@@ -152,7 +219,7 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 5. Start small (student projects)
+## 6. Start small (student projects)
 
 - **FOR-2 (best first project):** Fly a consumer drone over a stand in the Colby woods (with permission and a Part 107 pilot [S31]). Train a tree-crown detection model. Compare counts to a hand-measured plot. Deliverable: accuracy table and a map.
 - **FOR-3:** Photograph log ends on 50 truckloads at a local yard (with permission). Build a log-end counter and diameter estimator. Compare to the mill's scale tickets.
@@ -161,7 +228,7 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 6. Who to contact (organizations and public roles only)
+## 7. Who to contact (organizations and public roles only)
 
 - **Colby:** Davis Institute for Artificial Intelligence [S27]; the Colby faculty member on the UMaine–Colby forest LiDAR project, Environmental Studies [S13]; Colby Computer Science.
 - **UMaine:** Maine-FOREST project (NSF EPSCoR) [S12][S32]; Wheatland Geospatial Lab [S13][S30]; Center for Research on Sustainable Forests (CRSF) and its Cooperative Forestry Research Unit (CFRU) [S16]; School of Forest Resources.
@@ -172,7 +239,7 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 7. Risks and open questions
+## 8. Risks and open questions
 
 - **Connectivity:** Can teleoperation work in Maine woods without a custom network? Latency above ~200 ms breaks control [S19].
 - **Cost vs margins:** Logging contractors have thin margins [S10]. Who pays for a $250k+ retrofit?
@@ -183,10 +250,10 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 ---
 
-## 8. Sources
-All in [`../sources.md`](../sources.md). This file uses S1, S3–S35. (S2 was withdrawn.)
+## 9. Sources
+All in [`../sources.md`](../sources.md). This file uses S1, S3–S35, S400–S411. (S2 was withdrawn.)
 
-## 9. Dig deeper
+## 10. Dig deeper
 - Read the FOR/Maine workforce report [S34] for training programs and wage data by occupation.
 - Visit UMaine's Advanced Manufacturing Center "B.O.T. Loft" robotics training space [S1].
 - Get county data: Maine DOL Center for Workforce Research (QCEW by county) or a free Census API key for County Business Patterns.

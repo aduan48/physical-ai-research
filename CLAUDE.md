@@ -9,7 +9,7 @@ Geography priority: Waterville / Kennebec County → central Maine → statewide
 ## Start every session here
 1. Read `research/PROGRESS.md` to see what is done and what is next.
 2. Continue with the next industry. Work **one industry at a time**.
-3. After each industry: update `opportunities.csv`, `sources.md`, `dig-deeper.md`, `README.md` (re-rank top 5), `PROGRESS.md`. Then commit (`research: <industry>`) and push to `origin/main`. Then give a 3-line summary and **wait for the user to say "continue"**.
+3. After each industry: update `opportunities.csv`, `sources.md`, `dig-deeper.md`, `README.md` (re-rank top 5), `PROGRESS.md`. Then commit (`research: <industry>`) and push to `origin/main`. Then give a 3-line summary and wait for the user to say "continue" (on 2026-11-25 the user asked to finish all remaining sectors in one go).
 
 ## Industry order
 1. Forestry, logging, sawmills, paper and wood products (`forestry`)
@@ -28,7 +28,7 @@ Candidate additions (add only with evidence, and explain why to the user): water
 - `research/README.md` — 1-page exec summary: top 5 opportunities ranked, one-line reason each, how to navigate.
 - `research/PROGRESS.md` — dated log: done, in progress, next.
 - `research/industries/<slug>.md` — one per industry, fixed template below.
-- `research/opportunities.csv` — columns: `id,industry,bottleneck,solution,impact,feasibility,months_to_pilot,cost_range,file`. `id` like `FOR-1`. `file` relative to `research/`, e.g. `industries/forestry.md`.
+- `research/opportunities.csv` — columns: `id,industry,bottleneck,solution,impact,feasibility,months_to_pilot,cost_range,file,competitors,edge`. `competitors` = main existing players, `;`-separated. `edge` = one line on where a Colby-based effort could win. `id` like `FOR-1`. `file` relative to `research/`, e.g. `industries/forestry.md`.
 - `research/sources.md` — every source, globally numbered `S1, S2, …`: title, URL, organization, date, claims it supports. Never renumber existing sources; append only.
 - `research/dig-deeper.md` — reports, organizations, events, grants, courses, datasets, open questions.
 - `research/raw/<slug>/` — raw notes and scraped data. Each file starts with `Source URL:` and `Accessed: YYYY-MM-DD`.
@@ -39,12 +39,13 @@ Candidate additions (add only with evidence, and explain why to the user): water
 1. **Overview** — key takeaway first; footprint table with numbers, units, `[S#]` citations.
 2. **Bottlenecks** — 2–4, each with evidence (report, dataset, article, quote) and citation.
 3. **Opportunities** — one card per bottleneck: solution in plain language; existing examples anywhere in the world; ratings table (Impact 1–5, Feasibility 1–5, Time to first pilot in months, Rough cost range) with a one-sentence reason each.
-4. **What's needed** — hardware, software/models, data, skills, partners, funding (MTI, NSF, USDA, etc.), regulations/permits.
-5. **Start small** — a realistic first student project per opportunity.
-6. **Who to contact** — organizations, companies, Colby programs, Maine research centers. Organizations and public roles only. **No personal contact info.**
-7. **Risks and open questions**
-8. **Sources** — list of `[S#]` used in the file.
-9. **Dig deeper**
+4. **Competitors and our edge** — per opportunity, a table of who already does this (companies, research groups, public programs) and how each falls short for central Maine (price, scale for small operators, cold/winter, rural connectivity, no local support, models not trained on Maine conditions, evidence quality). Then **Our edge**: the specific gap a Colby-based student or startup could fill, and why that is credible. Shortfalls must be sourced `[S#]` or clearly labeled "author analysis". Never invent prices or customer counts.
+5. **What's needed** — hardware, software/models, data, skills, partners, funding (MTI, NSF, USDA, etc.), regulations/permits.
+6. **Start small** — a realistic first student project per opportunity.
+7. **Who to contact** — organizations, companies, Colby programs, Maine research centers. Organizations and public roles only. **No personal contact info.**
+8. **Risks and open questions**
+9. **Sources** — list of `[S#]` used in the file.
+10. **Dig deeper**
 
 ## Research rules
 - Every factual claim needs a source `[S#]`. If unsourced, label it "unverified" or leave it out.

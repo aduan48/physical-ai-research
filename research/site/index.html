@@ -34,7 +34,7 @@
   .filters input { flex: 1 1 200px; }
   /* table */
   .table-wrap { overflow-x: auto; }
-  table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: 0.9rem; }
+  table { border-collapse: collapse; width: 100%; min-width: 900px; font-size: 0.9rem; }
   th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
   th button { all: unset; cursor: pointer; font-weight: 600; color: var(--text-secondary); }
   th button:focus-visible { outline: 2px solid var(--series-1); outline-offset: 2px; }
@@ -70,13 +70,13 @@
   <section aria-labelledby="h-chart">
     <h2 id="h-chart">Impact vs feasibility</h2>
     <div class="chart" id="chart"></div>
-    <p class="note">Each dot is one opportunity. Top right = do first. Hover or tab to a dot for details.</p>
+    <p class="note">Each dot is one opportunity. Dots with the same scores are grouped around that grid point. Top right = do first. Hover or tab to a dot for details, including competitors and our edge.</p>
   </section>
 
   <section aria-labelledby="h-table">
     <h2 id="h-table">All opportunities</h2>
     <div class="filters">
-      <input id="q" type="search" placeholder="Search bottleneck or solution…" aria-label="Search opportunities">
+      <input id="q" type="search" placeholder="Search bottleneck, solution, competitor…" aria-label="Search opportunities">
       <select id="ind" aria-label="Filter by industry"><option value="">All industries</option></select>
     </div>
     <div class="table-wrap"><table id="tbl"></table></div>
@@ -95,7 +95,7 @@
 const REPO = "https://github.com/aduan48/physical-ai-research/blob/main/research/";
 const COLS = [
   ["id", "ID"], ["industry", "Industry"], ["bottleneck", "Bottleneck"], ["solution", "Solution"],
-  ["impact", "Impact"], ["feasibility", "Feas."], ["months_to_pilot", "Pilot (mo)"], ["cost_range", "Cost"]
+  ["impact", "Impact"], ["feasibility", "Feas."], ["months_to_pilot", "Pilot (mo)"], ["cost_range", "Cost"], ["edge", "Our edge"]
 ];
 const NUM = new Set(["impact", "feasibility", "months_to_pilot"]);
 
@@ -132,7 +132,7 @@ function renderTable() {
   const q = document.getElementById("q").value.toLowerCase();
   const ind = document.getElementById("ind").value;
   const rows = data
-    .filter(r => (!ind || r.industry === ind) && (!q || (r.bottleneck + " " + r.solution + " " + r.id).toLowerCase().includes(q)))
+    .filter(r => (!ind || r.industry === ind) && (!q || (r.bottleneck + " " + r.solution + " " + r.id + " " + r.competitors + " " + r.edge).toLowerCase().includes(q)))
     .sort((a, b) => {
       const x = a[sortKey], y = b[sortKey];
       const d = NUM.has(sortKey) ? x - y : String(x).localeCompare(String(y));
@@ -153,18 +153,17 @@ function renderTable() {
 }
 
 function renderChart() {
-  const W = 640, H = 420, m = { l: 48, r: 16, t: 16, b: 44 };
+  const W = 760, H = 520, m = { l: 48, r: 16, t: 16, b: 44 };
   const pw = W - m.l - m.r, ph = H - m.t - m.b;
   const sx = v => m.l + (v - 0.5) / 5 * pw, sy = v => m.t + ph - (v - 0.5) / 5 * ph;
-  // Dots sharing a score sit side by side; each spot gets one combined label above it.
+  // Dots sharing a score form a small grid (max 3 per row), each with its own ID label.
   const cells = {};
   data.forEach(r => (cells[r.feasibility + "," + r.impact] ||= []).push(r));
-  const pts = [], labels = [];
+  const pts = [];
   Object.values(cells).forEach(g => {
     g.sort((a, b) => a.id.localeCompare(b.id));
-    const cx = sx(g[0].feasibility), cy = sy(g[0].impact);
-    g.forEach((r, i) => pts.push({ r, x: cx + (i - (g.length - 1) / 2) * 16, y: cy }));
-    labels.push({ x: cx, y: cy - 14, t: g.map(r => r.id).join(" · ") });
+    const cx = sx(g[0].feasibility), cy = sy(g[0].impact), cols = Math.min(3, g.length), rows = Math.ceil(g.length / cols);
+    g.forEach((r, i) => pts.push({ r, x: cx - 14 + (i % cols - (cols - 1) / 2) * 46, y: cy + (Math.floor(i / cols) - (rows - 1) / 2) * 18 }));
   });
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Scatter chart of impact versus feasibility for ${data.length} opportunities">`;
   s += `<rect x="${sx(3)}" y="${m.t}" width="${sx(5.5) - sx(3)}" height="${sy(3) - m.t}" fill="var(--quad)"/>`;
@@ -182,17 +181,17 @@ function renderChart() {
   s += `<text x="${m.l + pw / 2}" y="${H - 6}" text-anchor="middle">Feasibility (1–5) →</text>`;
   s += `<text transform="translate(14 ${m.t + ph / 2}) rotate(-90)" text-anchor="middle">Impact (1–5) →</text>`;
   pts.forEach(({ r, x, y }, i) => {
-    s += `<circle class="dot" cx="${x}" cy="${y}" r="6"/>`;
-    s += `<circle class="hit" cx="${x}" cy="${y}" r="14" tabindex="0" data-i="${i}" aria-label="${esc(r.id)}: ${esc(r.solution)}. Impact ${r.impact}, feasibility ${r.feasibility}"/>`;
+    s += `<circle class="dot" cx="${x}" cy="${y}" r="4.5"/>`;
+    s += `<text x="${x + 7}" y="${y + 3.5}" style="fill:var(--text-primary);font-size:10px">${esc(r.id)}</text>`;
+    s += `<circle class="hit" cx="${x}" cy="${y}" r="9" tabindex="0" data-i="${i}" aria-label="${esc(r.id)}: ${esc(r.solution)}. Impact ${r.impact}, feasibility ${r.feasibility}"/>`;
   });
-  labels.forEach(l => s += `<text x="${l.x}" y="${l.y}" text-anchor="middle" style="fill:var(--text-primary)">${esc(l.t)}</text>`);
   s += "</svg>";
   const box = document.getElementById("chart");
   box.innerHTML = s + '<div class="tip" id="tip"></div>';
   const tip = document.getElementById("tip");
   const show = el => {
     const { r } = pts[el.dataset.i];
-    tip.innerHTML = `<b>${esc(r.id)} · ${esc(r.industry)}</b><br><span>${esc(r.solution)}</span><br><span>Impact ${r.impact} · Feasibility ${r.feasibility} · ${r.months_to_pilot} mo · ${esc(r.cost_range)}</span>`;
+    tip.innerHTML = `<b>${esc(r.id)} · ${esc(r.industry)}</b><br><span>${esc(r.solution)}</span><br><span>Impact ${r.impact} · Feasibility ${r.feasibility} · ${r.months_to_pilot} mo · ${esc(r.cost_range)}</span>${r.competitors ? `<br><span>Competitors: ${esc(r.competitors.replace(/;\s*/g, ", "))}</span>` : ""}${r.edge ? `<br><span>Edge: ${esc(r.edge)}</span>` : ""}`;
     const br = box.getBoundingClientRect(), er = el.getBoundingClientRect();
     tip.style.display = "block";
     const left = Math.min(er.left - br.left + 16, br.width - tip.offsetWidth - 4);
