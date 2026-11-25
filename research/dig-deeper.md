@@ -3,6 +3,9 @@
 Places to investigate further. Grouped by type, tagged by industry.
 
 ## Reports to read
+- [Manufacturing] Industry 4.0 Smart Manufacturing for Maine market study (MTI-funded), summarized in [S57].
+- [Manufacturing] NIST AMS 100-41 cobot integration best practices [S64].
+- [Manufacturing] Maine DECD State of Food Processing report (2025; maine.gov blocks scripts, read by hand).
 - [Healthcare] MECEP direct care workforce report (June 2024), summarized in [S38].
 - [Healthcare] Maine Nursing Action Coalition 2024 nursing forecast, summarized in [S41].
 - [Forestry] 2024 Statewide Economic Contribution of Maine's Forest Products Sector, MFPC / DECD [S1]. Read; county table on p.12.
@@ -11,6 +14,7 @@ Places to investigate further. Grouped by type, tagged by industry.
 - [Forestry] 2021–2025 Maine State of the Forest report (review draft, Maine Forest Service). Not yet read: https://www.maine.gov/dacf/mfs/publications/general_publications/
 
 ## Organizations
+- [Manufacturing] Maine MEP; UMaine Advanced Manufacturing Center; Roux Institute Smart Manufacturing Roadmap Program [S66]; ARM Institute [S62].
 - [Healthcare] Spectrum Generations [S50]; Maine Council on Aging [S54]; UMaine Center on Aging [S53]; Maine Health Care Association [S51]; MECEP [S38].
 - [Forestry] UMaine Maine-FOREST (NSF EPSCoR) [S12]; Wheatland Geospatial Lab [S30]; CRSF / CFRU [S16].
 - [Forestry] Professional Logging Contractors of Maine [S4]; Maine Forest Products Council [S1]; FOR/Maine [S34].
@@ -21,6 +25,7 @@ Places to investigate further. Grouped by type, tagged by industry.
 - (To find) PLC annual meeting; Maine Forest Products Council events; UMaine forestry field days.
 
 ## Grants and funding
+- [Manufacturing] MTI (funded the Industry 4.0 study [S57]); MEP cost-shared projects [S60]; ARM Institute project calls [S62].
 - [Healthcare] NIH/NIA SBIR for aging tech; EDA (funded the ND medical drone trial [S49]); state aging funds (NY bought 800+ ElliQ devices [S46]).
 - [Forestry] Maine Technology Institute (MTI); EDA Forest Bioproducts Tech Hub, $20M, UMaine-led, MTI gives vouchers and grants [S25].
 - [Forestry] NSF EPSCoR (Maine-FOREST, award OIA-2416915) [S32].
@@ -31,6 +36,7 @@ Places to investigate further. Grouped by type, tagged by industry.
 - [Forestry] ROS 2 tutorials (for FOR-1 prototype).
 
 ## Datasets
+- [Manufacturing] FRED/BLS Maine manufacturing employment series MEMFG [S55] (fred.stlouisfed.org is script-friendly via its API with a free key).
 - [Healthcare] CDC NCHS fall death data by state [S43]; America's Health Rankings senior measures [S37][S42]; BLS injury snapshots by occupation [S44].
 - [Healthcare] Public fall-detection datasets (to find) for HC-1/HC-2 student projects.
 - [All] Maine DOL Center for Workforce Research: QCEW employment by county and NAICS. Get Kennebec (FIPS 23011) and Somerset (23025) for NAICS 113, 321, 322.
@@ -47,3 +53,6 @@ Places to investigate further. Grouped by type, tagged by industry.
 - [Healthcare] How many older adults in Kennebec/Somerset live alone? (Census ACS table, to pull.)
 - [Healthcare] Did the SafelyYou controlled trial (NCT03685240) ever publish results?
 - [Healthcare] Would home care clients accept a radar sensor? Ask Spectrum Generations.
+- [Manufacturing] Is the "3,000 skilled manufacturing workers needed" figure real? Find the Manufacturers Association of Maine study itself.
+- [Manufacturing] Does New Balance Skowhegan use or plan automation (e.g. vision inspection of stitching)?
+- [Manufacturing] How many Maine blueberry and seafood processors now use optical sorting or robots?

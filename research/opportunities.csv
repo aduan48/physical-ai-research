@@ -8,3 +8,6 @@ HC-2,Healthcare,"Nursing homes short-staffed and closing; residents lie on floor
 HC-3,Healthcare,"Aides injured lifting patients","Robotic and sensor-assisted patient lifting",3,2,36,"$50k–$250k",industries/healthcare.md
 HC-4,Healthcare,"Nurse shortage; MaineGeneral absorbing Inland Hospital's patients","Autonomous hospital delivery robots for supplies, meds, and lab samples",3,3,12,"$100k–$500k",industries/healthcare.md
 HC-5,Healthcare,"Waterville lost its hospital; longer trips for care","Drone delivery of lab samples and medications between sites",3,3,18,"$50k–$300k",industries/healthcare.md
+MFG-1,Manufacturing,"Manufacturing jobs down 14% since 2006; small firms slow to automate","Collaborative robots for machine tending, packing, and inspection at small manufacturers",3,4,6,"$30k–$100k",industries/manufacturing.md
+MFG-2,Manufacturing,"Seasonal food packing needs scarce round-the-clock labor","AI optical sorting for wild blueberry and produce packing lines",3,5,6,"$100k–$500k",industries/manufacturing.md
+MFG-3,Manufacturing,"Seafood plants can't recruit workers; quality checked by hand","Cobots and machine vision for seafood handling and quality checks",3,2,24,"$200k–$1M",industries/manufacturing.md

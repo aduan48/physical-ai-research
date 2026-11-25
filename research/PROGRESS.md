@@ -5,8 +5,8 @@
 |---|---|---|
 | 1 | Forestry, logging, sawmills, paper | ✅ Done 2026-11-24 |
 | 2 | Healthcare and elder care | ✅ Done 2026-11-24 |
-| 3 | Manufacturing and food processing | ⏭ Next |
-| 4 | Agriculture | ⬜ |
+| 3 | Manufacturing and food processing | ✅ Done 2026-11-24 |
+| 4 | Agriculture | ⏭ Next |
 | 5 | Construction, roads, winter maintenance | ⬜ |
 | 6 | Energy | ⬜ |
 | 7 | Logistics, warehousing, trucking | ⬜ |
@@ -30,6 +30,10 @@
 - Key local fact: Northern Light Inland Hospital in Waterville closed May 27, 2025.
 - Left out as unverified: MaineGeneral headcount; "15 nursing homes closed since 2020"; SafelyYou "80% fewer ER visits".
 
+### 2026-11-24 (manufacturing)
+- Manufacturing done: 3 opportunities (MFG-1 to MFG-3), sources S55–S66. Paper mills stay in forestry.
+- Left out as unverified: "3,000 skilled manufacturing workers needed" (Mainebiz 403; mame.org is a parked domain); Greenhead Lobster HPP details; DECD food processing job counts.
+
 ## Next
-- Manufacturing and food processing (Waterville/Augusta/Skowhegan plants; food processors; MEP data).
+- Agriculture: potatoes, dairy, blueberries (farm side), greenhouses. Avoid repeating MFG-2 (packing-line sorting).
 - Human to-dos: optionally get a Census API key.
