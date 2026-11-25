@@ -49,6 +49,7 @@ Candidate additions (add only with evidence, and explain why to the user): water
 ## Research rules
 - Every factual claim needs a source `[S#]`. If unsourced, label it "unverified" or leave it out.
 - **Never invent statistics, companies, or quotes.**
+- Never cite a URL taken only from a search result. Open it first (page reader) and confirm it loads and says what you cite. Search engines return dead or mangled URLs. If a source has to be dropped, mark it ❌ Withdrawn in sources.md; never renumber.
 - Prefer primary sources: government data, company sites, peer-reviewed papers. Then reputable news. Blogs last.
 - Ratings are the author's judgment. Say so, and give a one-sentence reason.
 - Scraping: public pages and datasets only. Check robots.txt. Rate-limit (≥1 s between requests). Generic User-Agent, no personal details in it. No LinkedIn, nothing behind a login, no personal data. Prefer official APIs and CSV downloads.

@@ -3,14 +3,14 @@
 Places to investigate further. Grouped by type, tagged by industry.
 
 ## Reports to read
-- [Forestry] 2024 Economic Contribution of Maine's Forest Products Sector, Maine DECD / MFPC [S1]. Read the full PDF by hand; scripts are blocked.
-- [Forestry] DECD Forestry and Forest Products summary (2025-05) [S2].
+- [Forestry] 2024 Statewide Economic Contribution of Maine's Forest Products Sector, MFPC / DECD [S1]. Read; county table on p.12.
+- [Forestry] Transforming Maine's Future Forest Workforce, FOR/Maine (2024) [S34]. Occupation-level retirement and openings data.
 - [Forestry] Maine Policy Review, spruce budworm remote sensing survey (2024) [S15].
 - [Forestry] 2021–2025 Maine State of the Forest report (review draft, Maine Forest Service). Not yet read: https://www.maine.gov/dacf/mfs/publications/general_publications/
 
 ## Organizations
 - [Forestry] UMaine Maine-FOREST (NSF EPSCoR) [S12]; Wheatland Geospatial Lab [S30]; CRSF / CFRU [S16].
-- [Forestry] Professional Logging Contractors of Maine [S4]; Maine Forest Products Council [S1]; FOR/Maine [S25].
+- [Forestry] Professional Logging Contractors of Maine [S4]; Maine Forest Products Council [S1]; FOR/Maine [S34].
 - [Forestry] Skogforsk (Sweden) Forestry Teleoperation Lab [S19]. Good model for FOR-1.
 - [All] Colby Davis Institute for AI [S27].
 
@@ -18,7 +18,7 @@ Places to investigate further. Grouped by type, tagged by industry.
 - (To find) PLC annual meeting; Maine Forest Products Council events; UMaine forestry field days.
 
 ## Grants and funding
-- [Forestry] Maine Technology Institute (MTI); EDA Forest Bioproducts Tech Hub, ~$22M, MTI-led [S25].
+- [Forestry] Maine Technology Institute (MTI); EDA Forest Bioproducts Tech Hub, $20M, UMaine-led, MTI gives vouchers and grants [S25].
 - [Forestry] NSF EPSCoR (Maine-FOREST, award OIA-2416915) [S32].
 - [All] USDA, NSF REU and SBIR/STTR (to research per industry).
 

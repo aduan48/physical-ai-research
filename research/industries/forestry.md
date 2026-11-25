@@ -1,6 +1,6 @@
 # Forestry, Logging, Sawmills, Paper and Wood Products
 
-> **Key takeaway:** Maine's forest economy is big ($8.3B output [S1]) but is losing workers [S1][S2][S5]. The best near-term physical AI bet is **drone + AI forest inventory**: research is already underway at UMaine with Colby as a partner [S12][S13][S14], and the hardware is cheap. The highest-impact but hardest bet is **remote-operated logging machines**, which Sweden is already testing [S18][S19].
+> **Key takeaway:** Maine's forest economy is big ($8.3B output [S1]) but is losing workers [S1][S5][S34]. The best near-term physical AI bet is **drone + AI forest inventory**: research is already underway at UMaine with Colby as a partner [S12][S13][S14], and the hardware is cheap. The highest-impact but hardest bet is **remote-operated logging machines**, which Sweden is already testing [S18][S19].
 
 Ratings and cost ranges below are **the author's judgment**, not sourced figures. Each has a one-line reason.
 
@@ -12,12 +12,16 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 | Measure | Value | Source |
 |---|---|---|
-| Total output, 2024 (incl. multiplier effects) | $8.3 billion | [S1] |
-| Total jobs supported, 2024 (incl. multipliers) | 29,000+ | [S1] |
-| Labor income, 2024 (incl. multipliers) | $2.1 billion | [S1] |
-| Direct sector jobs, 2024 | 13,669 (1.8% of Maine jobs) | [S2] |
-| Share of state GDP | 3.45% | [S3] |
+| Total output, 2024 (incl. multiplier effects) | $8.32 billion | [S1] |
+| Total jobs supported, 2024 (incl. multipliers) | 29,637 | [S1] |
+| Labor income, 2024 (incl. multipliers) | $2.08 billion | [S1] |
+| Direct sector jobs, 2024 | 11,888 | [S1] |
+| **Kennebec County** direct jobs, 2024 | 790 (6.6% of sector) | [S1] |
+| **Somerset County** direct jobs, 2024 (next county north of Waterville) | 1,743 (14.7% of sector; 2nd-highest county) | [S1] |
+| Share of state GDP | 3.45% | [S1][S3] |
 | Sector employment change, 2019→2024 | −7% | [S1] |
+| Direct GDP per worker, 2019→2024 (inflation-adjusted) | $467,767 → $411,461 (−12%) | [S1] |
+| Projected sector job change, 2022→2032 | −3% (−655 jobs) | [S34] |
 | Paper manufacturing sales, 2019→2024 | −41% | [S1] |
 | Wood product manufacturing sales, 2019→2024 | +45% | [S1] |
 | Logging + log trucking output (2017, incl. multipliers) | $619 million; ~9,000 jobs | [S11] |
@@ -29,7 +33,8 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 | Sappi North America, Somerset Mill | Skowhegan (≈20 mi from Colby) | Coated paper, packaging board | 780 employees; $500M machine upgrade | [S8] |
 | Huhtamaki | Waterville | Paper plates / molded fiber packaging | 485 employees (2019; may be outdated) | [S9] |
 
-- Kennebec/Somerset county job counts by NAICS code are **not yet collected**. See "Dig deeper".
+- The 2023 closure of the Androscoggin paper mill in Jay is named as a cause of job losses [S1].
+- Sub-sector (logging vs sawmill vs paper) job counts per county are **not yet collected**. See "Dig deeper".
 
 ---
 
@@ -40,7 +45,9 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 ### B1. Loggers and log truckers are aging and hard to replace
 - Average Maine logger age is 45 or older [S4].
 - A 2019 study for the Professional Logging Contractors of Maine projected the industry needs to hire at least 2,000 people in a decade [S4].
-- Logging lost 500+ jobs from 2019 to 2024 [S2]. In 2025, Maine Public reported the logging workforce "is dwindling" [S5].
+- Maine had 1,463 logging equipment operators in 2022. 32% are near retirement. The occupation is projected to shrink 23% by 2032, yet still needs ~211 new hires a year [S34].
+- 36% of heavy truck drivers and 39% of millwrights are near retirement [S34].
+- Pulp and paper caused most of the 2019–2024 job decline, but logging also lost jobs [S1]. In 2025, Maine Public reported the logging workforce "is dwindling" [S5].
 - A new hire costs a contractor about $100,000 in the first year [S4]. Technical high school logging programs fell from 20 to 5 [S4].
 - Log truck drivers earned a median $15.23/hour (2017), among the lowest for heavy truck drivers; thin contractor margins limit raises [S10].
 
@@ -53,8 +60,9 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 - In a 2024 survey of large Maine forest owners and managers, the barriers to remote sensing were **personnel capacity and lack of knowledge** [S15]. 67% already use LiDAR [S15].
 - Spruce budworm is rising in northern Maine [S17]. State monitoring relies on branch sampling and aerial surveys [S17].
 
-### B4. Mills must produce more with fewer workers
+### B4. Mills must produce more with fewer workers, but output per worker is falling
 - Sector jobs fell 7% while wood product sales rose 45% (2019–2024) [S1].
+- Direct GDP per worker fell from $467,767 to $411,461 (2019→2024, inflation-adjusted) [S1].
 - Paper sales fell 41% [S1]. Paper mills compete on cost, so unplanned downtime hurts. (The downtime link is the author's inference, not a sourced figure.)
 
 ---
@@ -69,7 +77,7 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 **Already being done**
 - Sweden, 2024: a forwarder near Västerås was driven by an operator ~90 km away in Skogforsk's Uppsala lab. A drone carried a portable 5G base station to fill a coverage gap [S18]. Partners: SCA, Skogforsk, Ericsson, Telia, Volvo CE, Mid Sweden University [S18].
 - Skogforsk found VR remote crane control performed "comparable to" in-cab control. But latency above ~200 ms made the crane impossible to control normally [S19].
-- Swedish research: operators are 35–38% of forwarding cost in northern Sweden; remote work can improve operator conditions [S20].
+- Swedish simulation of 1,100 harvest sites: one teleoperator running several forwarders cut extraction cost by 7%, and up to 15% on long hauls over 500 m [S20].
 
 | Rating | Score | Why |
 |---|---|---|
@@ -103,7 +111,7 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 
 **Already being done**
 - MiCROTEC's AI strength-grading scanner at Södra's Värö sawmill (Sweden): 240 boards/minute, four-sided [S21].
-- Lucidyne (Oregon) uses deep learning to grade lumber at up to 4,500 ft/minute [S22].
+- MiCROTEC's Lucidyne scanner grades boards with deep learning at up to 4,500 ft/minute [S22]. Hampton Lumber runs it at three Oregon sawmills [S35].
 - Vendors sell camera-based log scaling from truck cameras or a phone photo [S23] (vendor claims; no accuracy data published there).
 
 | Rating | Score | Why |
@@ -170,16 +178,17 @@ Ratings and cost ranges below are **the author's judgment**, not sourced figures
 - **Cost vs margins:** Logging contractors have thin margins [S10]. Who pays for a $250k+ retrofit?
 - **Jobs:** Automation could be framed as cutting jobs. In a shortage it may instead keep operations running. Needs local interviews.
 - **Under-canopy drones** are still "preliminary" research [S12].
-- **Data quality:** 21 of 32 sources here are search summaries only (🔎), because several sites block automated readers. The two DECD reports [S1][S2] are the most important to re-check by hand.
-- **Unknown:** Kennebec and Somerset county job counts in NAICS 113, 321, 322.
+- **Data quality:** Many sources here are search summaries only (🔎), because several sites block automated readers. The key economic figures now come from the full reports [S1][S34].
+- **Unknown:** Kennebec and Somerset job counts split by logging (NAICS 113), sawmills (321), and paper (322).
 
 ---
 
 ## 8. Sources
-S1–S32 in [`../sources.md`](../sources.md). This file uses S1–S32.
+All in [`../sources.md`](../sources.md). This file uses S1, S3–S35. (S2 was withdrawn.)
 
 ## 9. Dig deeper
-- Download and read the full DECD 2024 report [S1] and summary [S2] by hand (blocked to scripts).
+- Read the FOR/Maine workforce report [S34] for training programs and wage data by occupation.
+- Visit UMaine's Advanced Manufacturing Center "B.O.T. Loft" robotics training space [S1].
 - Get county data: Maine DOL Center for Workforce Research (QCEW by county) or a free Census API key for County Business Patterns.
 - Read the full Maine Policy Review spruce budworm paper [S15].
 - Ask the Maine-FOREST team what data they need labeled. A student could help.

@@ -147,3 +147,41 @@ Status: SNIPPET
 
 Source URL: https://www.faa.gov/uas/commercial_operators
 Status: NOT FETCHED (standard reference for FAA Part 107 commercial drone rules)
+
+---
+## Added 2026-11-24 (link fix). Excerpts only; full texts contain personal emails and were not saved.
+
+Source URL: https://maineforest.org/wp-content/uploads/2025/10/2024-Economic-Report-FINAL-for-printing-AK.pdf
+Accessed: 2026-11-24 · Status: READ (PDF text extracted with macOS PDFKit)
+- p.3: "$8.3B in output, 29,000+ jobs, $2.1B in labor income"; value added $3.4B = 3.45% of GDP; employment −7% since 2019; paper sales −41%; wood product sales +45%.
+- p.10 Table 2 (2024): Direct output $4,891,447,032; total $8,318,639,620. Employment direct 11,888, indirect 9,865, induced 7,884, total 29,637. Labor income total $2,075,002,535.
+- p.10 Table 3 (2019–24 real growth): output −14%, employment −7% (direct −3%), labor income +3%.
+- p.10: Androscoggin Paper Mill in Jay closed 2023 after 2020 explosion. "Job losses in Pulp and Paper Mills account for the greatest share of the direct employment decline since 2019, although other industries, such as logging, have also seen reductions."
+- p.11 Table 4: avg direct GDP contribution per employee $463,741 (2016), $467,767 (2019), $411,461 (2024). "economic productivity per worker has decreased."
+- p.12 Table 5 (county direct employment 2024): Aroostook 2,032 (17.1%); Somerset 1,743 (14.7%); Oxford 1,471 (12.4%); Penobscot 1,108; Androscoggin 1,006; Kennebec 790 (6.6%); Cumberland 776; Franklin 661.
+- Later section: UMaine Advanced Manufacturing Center "B.O.T. Loft" — hands-on training in robotics, automation, and advanced manufacturing for K-12, college, and industry.
+- NOTE: earlier maine.gov URL for this report (…/2025-10/…AK_0.pdf) and the DECD summary URL (S2) were not working links.
+
+Source URL: https://www.formaine.org/wp-content/uploads/2024/07/Final-Report-Forestry-Career-Pathways-MDF.pdf
+Accessed: 2026-11-24 · Status: READ (PDF text extracted)
+- "Transforming Maine's Future Forest Workforce", February 2024, FOR/MAINE, funded by Maine Development Foundation. Data: Lightcast, 2022 base, projections 2022–2032.
+- p.8: "Between 20 - 40% of workers in the top occupations will reach retirement age within the next 10 years."
+- p.12: "the forest products sector is projected to contract by 3% ... losing an estimated 655 jobs. The largest declines are expected among Logging Equipment Operators (-247 jobs), Heavy and Tractor-Trailer Drivers (-233 jobs)..."
+- p.13 table (economy-wide, 2022): Logging Equipment Operators 1,463 jobs, −339 (−23%) projected, 211 avg annual openings, 32% retiring near-term. Heavy truck drivers 11,276, 1,370 openings/yr, 36% retiring. Millwrights 291, 39% retiring. Log graders and scalers 7 jobs.
+- p.7: projections "do not take into account ... innovations that might positively or negatively (such as automation) impact job growth".
+
+Source URL: https://research.slu.se/en/publications/the-economic-potential-of-semi-automated-tele-extraction-of-round/
+Accessed: 2026-11-24 · Status: READ
+- Lundbäck, Häggström, Fjeld, Lindroos, Nordfjell (2022), IJFE 33(3):271–288. Simulation, 1,100 sites. 7 teleoperators per 10 forwarders → 7% cost reduction; >500 m distances → up to 15%.
+
+Source URL: https://www.microtec.com/en/products/lucidyne
+Accessed: 2026-11-24 · Status: READ (vendor)
+- "The Lucidyne scans boards lineally, using MiCROTEC Ai to grade lumber." "Speed up to 4500 ft/min".
+
+Source URL: https://www.woodbusiness.ca/ai-in-action-a-case-study-on-intelligent-lumber-grading/
+Accessed: 2026-11-24 · Status: READ (2019-05-16)
+- Hampton Lumber, three Oregon sawmills, Lucidyne Perceptive Sight deep-learning grading. No result figures given.
+
+Source URL: https://umaine.edu/news/?p=117291
+Accessed: 2026-11-24 · Status: READ (2026-07-20)
+- "$20 million" EDA Tech Hub; UMaine leads consortium; MTI market development via "vouchers and grants"; Maine DOL apprenticeships. Replaces the unverified "~$22M, MTI-led" snippet above.
