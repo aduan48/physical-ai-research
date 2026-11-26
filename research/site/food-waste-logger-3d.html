@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Food Waste Logger 3D</title>
+<style>
+  :root {
+    --bg: #e9ece8;
+    --ink: #1d2420;
+    --muted: #5d6a63;
+    --panel: #fbfcfa;
+    --line: #cfd6d0;
+    --accent: #1f7a4d;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif; }
+  #wrap { display: grid; grid-template-columns: 1fr 330px; height: 100vh; }
+  #stage { position: relative; overflow: hidden; touch-action: none; cursor: grab; }
+  #stage.dragging { cursor: grabbing; }
+  canvas { display: block; width: 100%; height: 100%; }
+  #labels { position: absolute; inset: 0; pointer-events: none; }
+  .tag { position: absolute; transform: translate(12px, -50%); white-space: nowrap;
+    background: rgba(251, 252, 250, 0.94); border: 1px solid var(--line); border-radius: 6px;
+    padding: 3px 8px; font-size: 12px; line-height: 1.3; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+  .tag::before { content: ""; position: absolute; left: -16px; top: 50%; width: 8px; height: 8px;
+    margin-top: -4px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; }
+  .tag b { font-weight: 600; }
+  #hint { position: absolute; left: 16px; bottom: 14px; font-size: 12px; color: var(--muted);
+    background: rgba(251,252,250,0.85); padding: 4px 9px; border-radius: 6px; }
+  aside { background: var(--panel); border-left: 1px solid var(--line); padding: 20px 20px 28px;
+    overflow-y: auto; }
+  h1 { font-size: 19px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 13px; margin: 0 0 18px; line-height: 1.45; }
+  h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted);
+    margin: 20px 0 8px; font-weight: 600; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 6px 0; font-size: 14px; }
+  .row input[type=range] { width: 150px; accent-color: var(--accent); }
+  .row input[type=checkbox] { width: 17px; height: 17px; accent-color: var(--accent); }
+  .views { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  button { font: inherit; font-size: 13px; padding: 7px 4px; border: 1px solid var(--line);
+    background: #fff; color: var(--ink); border-radius: 6px; cursor: pointer; }
+  button:hover { border-color: var(--accent); }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  ol { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.5; }
+  ol li { margin-bottom: 5px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  td { padding: 5px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td:last-child { text-align: right; white-space: nowrap; color: var(--muted); padding-left: 8px; }
+  .keys { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 10px; font-size: 13px; }
+  .keys span { display: flex; align-items: center; gap: 7px; }
+  .sw { width: 12px; height: 12px; border-radius: 50%; flex: none; border: 1px solid rgba(0,0,0,0.25); }
+  .note { font-size: 12px; color: var(--muted); line-height: 1.45; margin-top: 10px; }
+  #err { display: none; position: absolute; inset: 0; align-items: center; justify-content: center;
+    padding: 30px; text-align: center; color: var(--muted); font-size: 14px; }
+  @media (max-width: 820px) {
+    #wrap { grid-template-columns: 1fr; grid-template-rows: 58vh auto; height: auto; }
+    aside { border-left: 0; border-top: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="stage">
+    <canvas id="c"></canvas>
+    <div id="labels"></div>
+    <div id="hint">Drag to rotate. Scroll to zoom. Right-drag to pan.</div>
+    <div id="err">The 3D library could not load. Check your internet connection and reload.</div>
+  </div>
+  <aside>
+    <h1>Kitchen food-waste logger</h1>
+    <p class="sub">Concept model of the pilot unit. A prep bin sits on a scale, a camera looks down
+      into it, and staff tap one button for why the food was thrown out.</p>
+
+    <h2>View</h2>
+    <div class="views">
+      <button data-view="iso">Angle</button>
+      <button data-view="front">Front</button>
+      <button data-view="side">Side</button>
+      <button data-view="top">Top</button>
+    </div>
+    <div class="row"><label for="explode">Exploded view</label>
+      <input id="explode" type="range" min="0" max="1" step="0.01" value="0"></div>
+    <div class="row"><label for="open">Open the electronics box</label>
+      <input id="open" type="checkbox"></div>
+    <div class="row"><label for="fov">Show camera view cone</label>
+      <input id="fov" type="checkbox" checked></div>
+    <div class="row"><label for="tags">Show labels</label>
+      <input id="tags" type="checkbox" checked></div>
+    <div class="row"><label for="spin">Slow rotation</label>
+      <input id="spin" type="checkbox" checked></div>
+
+    <h2>How one event works</h2>
+    <ol>
+      <li>Staff drop scraps in the bin.</li>
+      <li>The scale sees the weight jump and the microcontroller logs the change.</li>
+      <li>The camera takes one photo of the bin contents.</li>
+      <li>Staff tap a reason button and the light turns green.</li>
+      <li>Weight, time, photo and reason are saved on the board for the weekly report.</li>
+    </ol>
+
+    <h2>Reason buttons</h2>
+    <div class="keys">
+      <span><i class="sw" style="background:#e0a322"></i>Overproduction</span>
+      <span><i class="sw" style="background:#3f9d5a"></i>Trim and peelings</span>
+      <span><i class="sw" style="background:#c2452f"></i>Spoiled</span>
+      <span><i class="sw" style="background:#3a6fc4"></i>Expired</span>
+      <span><i class="sw" style="background:#8a55b8"></i>Dropped or burnt</span>
+      <span><i class="sw" style="background:#e6e6e0"></i>Other</span>
+    </div>
+
+    <h2>Parts</h2>
+    <table>
+      <tr><td>Arduino Uno Q, 2 GB</td><td>$59</td></tr>
+      <tr><td>HX711 load cell amplifier</td><td>$4.95</td></tr>
+      <tr><td>Four load cells and platform</td><td>estimate</td></tr>
+      <tr><td>USB camera and powered hub</td><td>estimate</td></tr>
+      <tr><td>Sealed wipeable enclosure</td><td>estimate</td></tr>
+      <tr><td>Six buttons and status light</td><td>estimate</td></tr>
+      <tr><td>Mast, arm and base</td><td>estimate</td></tr>
+    </table>
+    <p class="note">Only the first two prices were verified. The whole unit was estimated at about
+      $240 to $340. Sizes here are illustrative: a 50 cm base, a bin about 55 cm tall and a camera
+      roughly 1.3 m off the floor. The category names are a starting suggestion to settle with the kitchen.</p>
+  </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  if (!window.THREE) { document.getElementById('err').style.display = 'flex'; return; }
+
+  var stage = document.getElementById('stage');
+  var canvas = document.getElementById('c');
+  var labelLayer = document.getElementById('labels');
+
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.outputEncoding = THREE.sRGBEncoding;
+
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xe9ece8);
+  scene.fog = new THREE.Fog(0xe9ece8, 6, 14);
+
+  var camera = new THREE.PerspectiveCamera(38, 1, 0.05, 50);
+
+  // Lights
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xb9c2ba, 0.75));
+  var sun = new THREE.DirectionalLight(0xffffff, 0.85);
+  sun.position.set(2.2, 4, 2.6);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.camera.left = -2; sun.shadow.camera.right = 2;
+  sun.shadow.camera.top = 2.5; sun.shadow.camera.bottom = -1;
+  sun.shadow.camera.near = 0.5; sun.shadow.camera.far = 10;
+  sun.shadow.bias = -0.0005;
+  scene.add(sun);
+  var fill = new THREE.DirectionalLight(0xdfe8ff, 0.3);
+  fill.position.set(-3, 2, -2);
+  scene.add(fill);
+
+  // Helpers
+  function mat(color, rough, metal, extra) {
+    var m = new THREE.MeshStandardMaterial({ color: color, roughness: rough, metalness: metal });
+    if (extra) { for (var k in extra) { m[k] = extra[k]; } }
+    return m;
+  }
+  function box(w, h, d, material) {
+    var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
+    m.castShadow = true; m.receiveShadow = true; return m;
+  }
+  function cyl(rt, rb, h, material, seg, open) {
+    var m = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg || 40, 1, !!open), material);
+    m.castShadow = true; m.receiveShadow = true; return m;
+  }
+
+  var M = {
+    floor: mat(0xd9ddd7, 0.95, 0),
+    base: mat(0x30363a, 0.6, 0.3),
+    rubber: mat(0x15181a, 0.9, 0),
+    steel: mat(0xc9ced1, 0.28, 0.85),
+    alu: mat(0xaab1b5, 0.4, 0.8),
+    bin: mat(0x7d868c, 0.7, 0.05, { side: THREE.DoubleSide }),
+    binRim: mat(0x636b70, 0.6, 0.05),
+    mast: mat(0xd5d9db, 0.35, 0.75),
+    box: mat(0x9fb2bd, 0.55, 0.0),
+    lid: mat(0xb9c8d0, 0.5, 0.0, { transparent: true, opacity: 1 }),
+    gasket: mat(0x2a6f9e, 0.7, 0),
+    pcb: mat(0x0e6b6f, 0.6, 0.1),
+    pcb2: mat(0x5a3d8c, 0.6, 0.1),
+    chip: mat(0x1b1d1f, 0.5, 0.2),
+    gold: mat(0xc9a646, 0.35, 0.9),
+    cam: mat(0x202427, 0.45, 0.3),
+    lens: mat(0x0b0d10, 0.1, 0.6),
+    cable: mat(0x1d2023, 0.8, 0),
+    panel: mat(0x4a545b, 0.5, 0.05)
+  };
+
+  // Floor
+  var floor = new THREE.Mesh(new THREE.CircleGeometry(7, 64), M.floor);
+  floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+  var grid = new THREE.GridHelper(6, 24, 0xc3c9c2, 0xcfd4ce);
+  grid.position.y = 0.001; scene.add(grid);
+
+  var unit = new THREE.Group(); scene.add(unit);
+  var explodable = [];   // { obj, home: Vector3, offset: Vector3 }
+  function track(obj, ox, oy, oz) {
+    explodable.push({ obj: obj, home: obj.position.clone(), offset: new THREE.Vector3(ox, oy, oz) });
+  }
+
+  // Base frame
+  var base = box(0.52, 0.035, 0.52, M.base); base.position.y = 0.0275; unit.add(base);
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (s) {
+    var foot = cyl(0.025, 0.028, 0.012, M.rubber, 20);
+    foot.position.set(s[0] * 0.22, 0.006, s[1] * 0.22); unit.add(foot);
+  });
+
+  // Load cells at the four corners
+  var cells = new THREE.Group(); unit.add(cells);
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (s) {
+    var bar = box(0.085, 0.014, 0.022, M.alu);
+    bar.position.set(s[0] * 0.17, 0.052, s[1] * 0.17);
+    bar.rotation.y = s[0] * s[1] > 0 ? Math.PI / 4 : -Math.PI / 4;
+    cells.add(bar);
+    var pad = cyl(0.012, 0.012, 0.01, M.rubber, 16);
+    pad.position.set(s[0] * 0.19, 0.064, s[1] * 0.19); cells.add(pad);
+  });
+  track(cells, 0, 0.07, 0);
+
+  // Weighing platform
+  var plate = new THREE.Group(); unit.add(plate);
+  var top = box(0.48, 0.012, 0.48, M.steel); top.position.y = 0.075; plate.add(top);
+  var lip = box(0.44, 0.004, 0.44, mat(0xb7bdc0, 0.5, 0.7)); lip.position.y = 0.083; plate.add(lip);
+  track(plate, 0, 0.2, 0);
+
+  // Prep bin with contents
+  var bin = new THREE.Group(); unit.add(bin);
+  var BIN_H = 0.55, BIN_Y = 0.085;
+  var wall = cyl(0.2, 0.155, BIN_H, M.bin, 48, true); wall.position.y = BIN_Y + BIN_H / 2; bin.add(wall);
+  var bottom = cyl(0.155, 0.155, 0.008, M.binRim, 48); bottom.position.y = BIN_Y + 0.004; bin.add(bottom);
+  var rim = new THREE.Mesh(new THREE.TorusGeometry(0.203, 0.011, 12, 60), M.binRim);
+  rim.rotation.x = Math.PI / 2; rim.position.y = BIN_Y + BIN_H; rim.castShadow = true; bin.add(rim);
+  [-1, 1].forEach(function (s) {
+    var h = box(0.03, 0.02, 0.1, M.binRim); h.position.set(s * 0.215, BIN_Y + BIN_H - 0.05, 0); bin.add(h);
+  });
+  var fillY = BIN_Y + 0.2;
+  var fillR = 0.155 + (0.2 - 0.155) * (0.2 / BIN_H) - 0.004;
+  var waste = cyl(fillR, fillR, 0.01, mat(0x6b5a3a, 0.95, 0), 40); waste.position.y = fillY; bin.add(waste);
+  var scrapColors = [0x7fa650, 0xd98a3a, 0xc9c2a0, 0xb8452f, 0x8d6b3f, 0x9fbf63, 0xe2c48a];
+  for (var i = 0; i < 26; i++) {
+    var a = i * 2.39996, r = fillR * 0.85 * Math.sqrt((i + 0.5) / 26);
+    var g = (i % 3 === 0)
+      ? new THREE.BoxGeometry(0.035, 0.014, 0.022)
+      : new THREE.SphereGeometry(0.014 + (i % 4) * 0.003, 10, 8);
+    var s = new THREE.Mesh(g, mat(scrapColors[i % scrapColors.length], 0.9, 0));
+    s.position.set(Math.cos(a) * r, fillY + 0.012 + (i % 3) * 0.004, Math.sin(a) * r);
+    s.rotation.set(i, i * 0.7, i * 0.3); s.scale.y = 0.7; bin.add(s);
+  }
+  track(bin, 0, 0.5, 0.15);
+
+  // Mast and arm
+  var MAST_Z = -0.285, MAST_H = 1.32;
+  var mast = cyl(0.016, 0.016, MAST_H, M.mast, 24); mast.position.set(0, 0.045 + MAST_H / 2, MAST_Z); unit.add(mast);
+  var collar = cyl(0.03, 0.034, 0.05, M.base, 24); collar.position.set(0, 0.07, MAST_Z); unit.add(collar);
+  var tongue = box(0.09, 0.03, 0.09, M.base); tongue.position.set(0, 0.03, MAST_Z + 0.02); unit.add(tongue);
+  var ARM_Y = 0.045 + MAST_H - 0.02;
+  var arm = box(0.028, 0.022, 0.31, M.mast); arm.position.set(0, ARM_Y, MAST_Z + 0.145); unit.add(arm);
+  var elbow = box(0.045, 0.05, 0.045, M.base); elbow.position.set(0, ARM_Y, MAST_Z); unit.add(elbow);
+
+  // Camera head
+  var camHead = new THREE.Group(); unit.add(camHead);
+  camHead.position.set(0, ARM_Y - 0.03, 0);
+  var camBody = box(0.07, 0.035, 0.07, M.cam); camHead.add(camBody);
+  var lens = cyl(0.016, 0.02, 0.022, M.lens, 24); lens.position.y = -0.028; camHead.add(lens);
+  var glass = cyl(0.012, 0.012, 0.002, mat(0x2b4a66, 0.05, 0.9), 24); glass.position.y = -0.04; camHead.add(glass);
+  var ring = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.006, 10, 40),
+    new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xfff3d6, emissiveIntensity: 0.9, roughness: 0.4 }));
+  ring.rotation.x = Math.PI / 2; ring.position.y = -0.02; camHead.add(ring);
+  track(camHead, 0, 0.12, 0);
+
+  // Camera view cone
+  var coneH = (ARM_Y - 0.07) - (BIN_Y + BIN_H);
+  var cone = new THREE.Mesh(new THREE.ConeGeometry(0.2, coneH, 40, 1, true),
+    new THREE.MeshBasicMaterial({ color: 0x1f7a4d, transparent: true, opacity: 0.13, side: THREE.DoubleSide, depthWrite: false }));
+  cone.position.set(0, BIN_Y + BIN_H + coneH / 2, 0); unit.add(cone);
+  var coneEdge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.ConeGeometry(0.2, coneH, 12, 1, true)),
+    new THREE.LineBasicMaterial({ color: 0x1f7a4d, transparent: true, opacity: 0.35 }));
+  coneEdge.position.copy(cone.position); unit.add(coneEdge);
+
+  // Electronics enclosure on the mast
+  var enc = new THREE.Group(); unit.add(enc);
+  var ENC_Y = 0.98;
+  enc.position.set(0, ENC_Y, MAST_Z + 0.05);
+  var shell = box(0.19, 0.13, 0.05, M.box); shell.position.z = -0.005; enc.add(shell);
+  var gasket = box(0.18, 0.12, 0.004, M.gasket); gasket.position.z = 0.021; enc.add(gasket);
+  var inner = box(0.17, 0.11, 0.002, mat(0x2b2f31, 0.8, 0)); inner.position.z = 0.0215; enc.add(inner);
+  // Uno Q board
+  var pcb = box(0.0686, 0.0534, 0.002, M.pcb); pcb.position.set(-0.04, 0.012, 0.027); enc.add(pcb);
+  var soc = box(0.014, 0.014, 0.0025, M.chip); soc.position.set(-0.05, 0.02, 0.029); enc.add(soc);
+  var mcu = box(0.009, 0.009, 0.002, M.chip); mcu.position.set(-0.028, 0.004, 0.029); enc.add(mcu);
+  var usbc = box(0.009, 0.007, 0.004, M.alu); usbc.position.set(-0.071, 0.012, 0.03); enc.add(usbc);
+  var hdrA = box(0.05, 0.003, 0.006, M.chip); hdrA.position.set(-0.036, 0.036, 0.031); enc.add(hdrA);
+  var hdrB = box(0.05, 0.003, 0.006, M.chip); hdrB.position.set(-0.036, -0.012, 0.031); enc.add(hdrB);
+  var matrix = box(0.02, 0.013, 0.0015, mat(0x101314, 0.3, 0.2)); matrix.position.set(-0.022, 0.022, 0.029); enc.add(matrix);
+  // HX711 amplifier
+  var hx = box(0.034, 0.021, 0.002, M.pcb2); hx.position.set(0.05, -0.03, 0.027); enc.add(hx);
+  var hxc = box(0.008, 0.006, 0.002, M.chip); hxc.position.set(0.05, -0.03, 0.029); enc.add(hxc);
+  // USB hub
+  var hub = box(0.05, 0.022, 0.012, M.cam); hub.position.set(0.045, 0.025, 0.03); enc.add(hub);
+  // jumper wires
+  [0xc2452f, 0x1d2023, 0xe0a322, 0x3f9d5a].forEach(function (c, n) {
+    var w = box(0.045, 0.0018, 0.0018, mat(c, 0.7, 0));
+    w.position.set(0.012, -0.022 - n * 0.004, 0.03); w.rotation.z = 0.12; enc.add(w);
+  });
+  // cable glands underneath
+  [-0.05, 0, 0.05].forEach(function (x) {
+    var gl = cyl(0.009, 0.009, 0.018, M.cam, 16); gl.position.set(x, -0.073, 0); enc.add(gl);
+  });
+  // lid
+  var lid = new THREE.Group(); enc.add(lid);
+  var lidPlate = box(0.19, 0.13, 0.012, M.lid); lid.add(lidPlate);
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (s) {
+    var sc = cyl(0.005, 0.005, 0.003, M.alu, 12); sc.rotation.x = Math.PI / 2;
+    sc.position.set(s[0] * 0.083, s[1] * 0.053, 0.0065); lid.add(sc);
+  });
+  lid.position.z = 0.029;
+  var lidHome = lid.position.clone();
+  var bracket = box(0.06, 0.06, 0.03, M.base); bracket.position.set(0, 0, -0.04); enc.add(bracket);
+
+  // Button panel on a side arm
+  var side = box(0.2, 0.02, 0.022, M.mast); side.position.set(0.11, ENC_Y - 0.14, MAST_Z + 0.02); unit.add(side);
+  var panel = new THREE.Group(); unit.add(panel);
+  panel.position.set(0.27, ENC_Y - 0.14, MAST_Z + 0.07);
+  panel.rotation.x = -0.5;
+  var pBody = box(0.17, 0.125, 0.035, M.panel); panel.add(pBody);
+  var btnColors = [0xe0a322, 0x3f9d5a, 0xc2452f, 0x3a6fc4, 0x8a55b8, 0xe6e6e0];
+  btnColors.forEach(function (c, n) {
+    var col = n % 3, rowN = Math.floor(n / 3);
+    var b = cyl(0.017, 0.017, 0.012, mat(c, 0.45, 0.05), 28);
+    b.rotation.x = Math.PI / 2;
+    b.position.set(-0.048 + col * 0.048, 0.006 - rowN * 0.045, 0.023); panel.add(b);
+    var bezel = cyl(0.021, 0.021, 0.004, M.chip, 28);
+    bezel.rotation.x = Math.PI / 2; bezel.position.set(b.position.x, b.position.y, 0.0185); panel.add(bezel);
+  });
+  var led = new THREE.Mesh(new THREE.SphereGeometry(0.008, 16, 12),
+    new THREE.MeshStandardMaterial({ color: 0x35d07f, emissive: 0x35d07f, emissiveIntensity: 1.2 }));
+  led.position.set(0.062, 0.045, 0.02); panel.add(led);
+  var strip = box(0.1, 0.012, 0.002, mat(0x1b1d1f, 0.4, 0.1)); strip.position.set(-0.02, 0.045, 0.0185); panel.add(strip);
+  track(panel, 0.14, 0, 0.1);
+
+  // Cables
+  function tube(points, radius) {
+    var curve = new THREE.CatmullRomCurve3(points.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }));
+    var m = new THREE.Mesh(new THREE.TubeGeometry(curve, 48, radius || 0.004, 8, false), M.cable);
+    m.castShadow = true; return m;
+  }
+  unit.add(tube([[0.05, ENC_Y - 0.08, MAST_Z + 0.05], [0.03, 0.7, MAST_Z + 0.03], [0.022, 0.25, MAST_Z + 0.012],
+    [0.03, 0.06, MAST_Z + 0.03], [0.1, 0.05, -0.2]], 0.0035));
+  unit.add(tube([[0, ENC_Y - 0.08, MAST_Z + 0.05], [-0.022, 0.6, MAST_Z + 0.01], [-0.022, 0.12, MAST_Z + 0.01],
+    [-0.06, 0.012, MAST_Z - 0.06], [-0.35, 0.008, MAST_Z - 0.2], [-0.8, 0.008, MAST_Z - 0.25]], 0.0045));
+  unit.add(tube([[-0.05, ENC_Y - 0.08, MAST_Z + 0.05], [-0.03, ENC_Y - 0.14, MAST_Z + 0.02],
+    [-0.02, ARM_Y - 0.08, MAST_Z + 0.012], [0, ARM_Y - 0.012, MAST_Z + 0.08], [0, ARM_Y - 0.012, -0.03]], 0.003));
+  unit.add(tube([[0.06, ENC_Y - 0.08, MAST_Z + 0.05], [0.12, ENC_Y - 0.125, MAST_Z + 0.04],
+    [0.22, ENC_Y - 0.15, MAST_Z + 0.05]], 0.003));
+
+  // Labels
+  var tagDefs = [
+    { t: '<b>Camera</b> with ring light', at: function () { return camHead.localToWorld(new THREE.Vector3(0.04, 0, 0)); } },
+    { t: '<b>Electronics box</b>, sealed and wipeable', at: function () { return enc.localToWorld(new THREE.Vector3(0.095, 0.03, 0.03)); } },
+    { t: '<b>Reason buttons</b> and status light', at: function () { return panel.localToWorld(new THREE.Vector3(0.085, 0, 0.02)); } },
+    { t: '<b>Prep bin</b>, the kitchen keeps its own', at: function () { return bin.localToWorld(new THREE.Vector3(0.2, BIN_Y + 0.33, 0.05)); } },
+    { t: '<b>Weighing platform</b>', at: function () { return plate.localToWorld(new THREE.Vector3(0.24, 0.08, 0.2)); } },
+    { t: '<b>Four load cells</b>', at: function () { return cells.localToWorld(new THREE.Vector3(0.19, 0.055, 0.19)); } },
+    { t: '<b>Base and mast</b>', at: function () { return new THREE.Vector3(0.016, 0.45, MAST_Z); } },
+    { t: '<b>Power</b> from a wall outlet', at: function () { return new THREE.Vector3(-0.5, 0.01, MAST_Z - 0.22); } }
+  ];
+  var innerTags = [
+    { t: '<b>Arduino Uno Q</b>', at: function () { return enc.localToWorld(new THREE.Vector3(-0.04, 0.03, 0.03)); } },
+    { t: '<b>HX711</b> scale amplifier', at: function () { return enc.localToWorld(new THREE.Vector3(0.05, -0.03, 0.03)); } }
+  ];
+  function makeTags(defs) {
+    defs.forEach(function (d) {
+      var el = document.createElement('div'); el.className = 'tag'; el.innerHTML = d.t;
+      labelLayer.appendChild(el); d.el = el;
+    });
+  }
+  makeTags(tagDefs); makeTags(innerTags);
+
+  // Orbit controls
+  var target = new THREE.Vector3(0.03, 0.66, -0.05);
+  var orbit = { theta: 0.72, phi: 1.2, radius: 3.0 };
+  var goal = { theta: 0.72, phi: 1.2, radius: 3.0 };
+  var views = {
+    iso: [0.72, 1.2, 3.0], front: [0, 1.42, 3.0], side: [Math.PI / 2, 1.42, 3.0], top: [0.001, 0.08, 3.2]
+  };
+  var drag = null, lastInput = 0;
+  stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  stage.addEventListener('pointerdown', function (e) {
+    drag = { x: e.clientX, y: e.clientY, pan: e.button === 2 || e.shiftKey };
+    stage.classList.add('dragging'); stage.setPointerCapture(e.pointerId); lastInput = performance.now();
+  });
+  stage.addEventListener('pointermove', function (e) {
+    if (!drag) { return; }
+    var dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY;
+    if (drag.pan) {
+      var right = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 0);
+      var up = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 1);
+      var k = orbit.radius * 0.0012;
+      target.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
+    } else {
+      goal.theta -= dx * 0.006;
+      goal.phi = Math.min(Math.PI / 2 - 0.02, Math.max(0.06, goal.phi - dy * 0.006));
+    }
+    lastInput = performance.now();
+  });
+  function endDrag() { drag = null; stage.classList.remove('dragging'); }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+  stage.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    goal.radius = Math.min(7, Math.max(0.6, goal.radius * (e.deltaY > 0 ? 1.1 : 0.9)));
+    lastInput = performance.now();
+  }, { passive: false });
+
+  // UI
+  var ui = {
+    explode: document.getElementById('explode'), open: document.getElementById('open'),
+    fov: document.getElementById('fov'), tags: document.getElementById('tags'), spin: document.getElementById('spin')
+  };
+  Array.prototype.forEach.call(document.querySelectorAll('[data-view]'), function (b) {
+    b.addEventListener('click', function () {
+      var v = views[b.getAttribute('data-view')];
+      var turns = Math.round((orbit.theta - v[0]) / (Math.PI * 2));
+      goal.theta = v[0] + turns * Math.PI * 2; goal.phi = v[1]; goal.radius = v[2];
+      target.set(0.03, 0.66, -0.05); ui.spin.checked = false;
+    });
+  });
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { ui.spin.checked = false; }
+
+  function resize() {
+    var w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize); resize();
+
+  var lidT = 0, v3 = new THREE.Vector3();
+  function placeTags(defs, visible) {
+    var w = stage.clientWidth, h = stage.clientHeight;
+    defs.forEach(function (d) {
+      if (!visible) { d.el.style.display = 'none'; return; }
+      v3.copy(d.at()).project(camera);
+      if (v3.z > 1 || v3.z < -1) { d.el.style.display = 'none'; return; }
+      d.el.style.display = 'block';
+      d.x = (v3.x * 0.5 + 0.5) * w; d.y = (-v3.y * 0.5 + 0.5) * h;
+      d.w = d.w || d.el.offsetWidth;
+      shown.push(d);
+    });
+  }
+  // Push overlapping labels apart vertically so none sits on top of another
+  var shown = [];
+  function settleTags() {
+    shown.sort(function (a, b) { return a.y - b.y; });
+    for (var i = 0; i < shown.length; i++) {
+      var a = shown[i]; a.ly = a.y;
+      for (var j = 0; j < i; j++) {
+        var b = shown[j];
+        var overlapX = a.x < b.x + b.w + 30 && b.x < a.x + a.w + 30;
+        if (overlapX && a.ly < b.ly + 27) { a.ly = b.ly + 27; }
+      }
+      a.el.style.left = a.x.toFixed(1) + 'px';
+      a.el.style.top = a.ly.toFixed(1) + 'px';
+    }
+    shown.length = 0;
+  }
+
+  var prev = performance.now();
+  function frame(now) {
+    var dt = Math.min(0.05, (now - prev) / 1000); prev = now;
+    if (ui.spin.checked && !drag && now - lastInput > 1500) { goal.theta += dt * 0.18; }
+    var ease = 1 - Math.pow(0.001, dt);
+    orbit.theta += (goal.theta - orbit.theta) * ease;
+    orbit.phi += (goal.phi - orbit.phi) * ease;
+    orbit.radius += (goal.radius - orbit.radius) * ease;
+    camera.position.set(
+      target.x + orbit.radius * Math.sin(orbit.phi) * Math.sin(orbit.theta),
+      target.y + orbit.radius * Math.cos(orbit.phi),
+      target.z + orbit.radius * Math.sin(orbit.phi) * Math.cos(orbit.theta));
+    camera.lookAt(target);
+
+    var ex = parseFloat(ui.explode.value);
+    explodable.forEach(function (e) { e.obj.position.copy(e.home).addScaledVector(e.offset, ex); });
+
+    lidT += ((ui.open.checked ? 1 : 0) - lidT) * ease;
+    lid.position.set(lidHome.x + lidT * 0.13, lidHome.y + lidT * 0.02, lidHome.z + lidT * 0.11);
+    lid.rotation.y = lidT * 0.9;
+    M.lid.opacity = 1 - lidT * 0.45;
+
+    var showCone = ui.fov.checked && ex < 0.05;
+    cone.visible = showCone; coneEdge.visible = showCone;
+
+    unit.updateMatrixWorld(true); camera.updateMatrixWorld(true);
+    placeTags(tagDefs, ui.tags.checked);
+    placeTags(innerTags, ui.tags.checked && lidT > 0.6);
+    settleTags();
+
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
