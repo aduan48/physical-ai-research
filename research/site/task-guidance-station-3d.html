@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Task Guidance Station 3D</title>
+<style>
+  :root {
+    --bg: #e8ebee;
+    --ink: #1c2126;
+    --muted: #5b6670;
+    --panel: #fafbfc;
+    --line: #ccd3da;
+    --accent: #2563a8;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif; }
+  #wrap { display: grid; grid-template-columns: 1fr 340px; height: 100vh; }
+  #stage { position: relative; overflow: hidden; touch-action: none; cursor: grab; }
+  #stage.dragging { cursor: grabbing; }
+  canvas#c { display: block; width: 100%; height: 100%; }
+  #labels { position: absolute; inset: 0; pointer-events: none; }
+  .tag { position: absolute; transform: translate(12px, -50%); white-space: nowrap;
+    background: rgba(250, 251, 252, 0.94); border: 1px solid var(--line); border-radius: 6px;
+    padding: 3px 8px; font-size: 12px; line-height: 1.3; box-shadow: 0 1px 3px rgba(0,0,0,0.12); }
+  .tag::before { content: ""; position: absolute; left: -16px; top: 50%; width: 8px; height: 8px;
+    margin-top: -4px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; }
+  .tag b { font-weight: 600; }
+  #hint { position: absolute; left: 16px; bottom: 14px; font-size: 12px; color: var(--muted);
+    background: rgba(250,251,252,0.85); padding: 4px 9px; border-radius: 6px; }
+  aside { background: var(--panel); border-left: 1px solid var(--line); padding: 20px 20px 28px;
+    overflow-y: auto; }
+  h1 { font-size: 19px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 13px; margin: 0 0 16px; line-height: 1.45; }
+  h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted);
+    margin: 20px 0 8px; font-weight: 600; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 6px 0; font-size: 14px; }
+  .row input[type=checkbox] { width: 17px; height: 17px; accent-color: var(--accent); }
+  .views { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .demo { border: 1px solid var(--line); border-radius: 8px; padding: 12px; background: #fff; }
+  .demo .now { font-size: 15px; font-weight: 600; margin: 0 0 2px; }
+  .demo .what { font-size: 13px; color: var(--muted); margin: 0 0 10px; min-height: 36px; line-height: 1.4; }
+  .stepper { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  button { font: inherit; font-size: 13px; padding: 7px 4px; border: 1px solid var(--line);
+    background: #fff; color: var(--ink); border-radius: 6px; cursor: pointer; }
+  button:hover:not(:disabled) { border-color: var(--accent); }
+  button:disabled { opacity: 0.45; cursor: default; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  ol, ul { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.5; }
+  li { margin-bottom: 5px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  td { padding: 5px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td:last-child { text-align: right; white-space: nowrap; color: var(--muted); padding-left: 8px; }
+  .note { font-size: 12px; color: var(--muted); line-height: 1.45; margin-top: 10px; }
+  #err { display: none; position: absolute; inset: 0; align-items: center; justify-content: center;
+    padding: 30px; text-align: center; color: var(--muted); font-size: 14px; }
+  @media (max-width: 820px) {
+    #wrap { grid-template-columns: 1fr; grid-template-rows: 58vh auto; height: auto; }
+    aside { border-left: 0; border-top: 1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="stage">
+    <canvas id="c"></canvas>
+    <div id="labels"></div>
+    <div id="hint">Drag to rotate. Scroll to zoom. Right-drag to pan.</div>
+    <div id="err">The 3D library could not load. Check your internet connection and reload.</div>
+  </div>
+  <aside>
+    <h1>Task guidance station</h1>
+    <p class="sub">Concept model. A camera above a workbench checks each step of a packing or assembly
+      task, and a screen shows the worker what to do next. It is meant for workers with cognitive
+      disabilities in supported employment, so a job coach does not have to stand over every step.</p>
+
+    <h2>Try the demo task</h2>
+    <div class="demo">
+      <p class="now" id="now">Step 1 of 4</p>
+      <p class="what" id="what"></p>
+      <div class="stepper">
+        <button id="prev">Back</button>
+        <button id="next" class="primary">Next step</button>
+        <button id="reset">Restart</button>
+      </div>
+      <div class="row" style="padding-bottom:0"><label for="oops">Show a mistake</label>
+        <input id="oops" type="checkbox"></div>
+    </div>
+
+    <h2>View</h2>
+    <div class="views">
+      <button data-view="iso">Angle</button>
+      <button data-view="front">Front</button>
+      <button data-view="side">Side</button>
+      <button data-view="top">Top</button>
+    </div>
+    <div class="row"><label for="fov">Show camera view cone</label>
+      <input id="fov" type="checkbox" checked></div>
+    <div class="row"><label for="tags">Show labels</label>
+      <input id="tags" type="checkbox" checked></div>
+    <div class="row"><label for="spin">Slow rotation</label>
+      <input id="spin" type="checkbox"></div>
+
+    <h2>How one step works</h2>
+    <ol>
+      <li>The screen shows one picture step and the matching bin lights up.</li>
+      <li>The worker picks the part and places it.</li>
+      <li>The camera checks that the right part is in the right place.</li>
+      <li>If it is right, the light turns green and the next step appears.</li>
+      <li>If it is wrong, the screen says so kindly and shows the right bin again.</li>
+    </ol>
+
+    <h2>What the camera adds</h2>
+    <ul>
+      <li>Picture-step apps already exist, but they cannot tell whether the step was done.</li>
+      <li>Checking each step catches a mistake before the kit is sealed.</li>
+      <li>The help button calls the coach only when the worker wants one.</li>
+      <li>Checking runs on the board, so no video has to leave the room.</li>
+    </ul>
+
+    <h2>Parts</h2>
+    <table>
+      <tr><td>Arduino Uno Q, 2 GB</td><td>$59</td></tr>
+      <tr><td>USB camera, mast and clamp</td><td>estimate</td></tr>
+      <tr><td>Small screen or old tablet</td><td>estimate</td></tr>
+      <tr><td>Bin lights and status light</td><td>estimate</td></tr>
+      <tr><td>Help button and speaker</td><td>estimate</td></tr>
+      <tr><td>Work mat and parts bins</td><td>estimate</td></tr>
+    </table>
+    <p class="note">Only the board price was verified. The four-step kit is a made-up example task and
+      the sizes are illustrative. Any trial with workers needs the provider's approval and the
+      worker's consent first.</p>
+  </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  if (!window.THREE) { document.getElementById('err').style.display = 'flex'; return; }
+
+  var stage = document.getElementById('stage');
+  var canvas = document.getElementById('c');
+  var labelLayer = document.getElementById('labels');
+
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.outputEncoding = THREE.sRGBEncoding;
+
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xe8ebee);
+  scene.fog = new THREE.Fog(0xe8ebee, 7, 16);
+  var camera = new THREE.PerspectiveCamera(38, 1, 0.05, 50);
+
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xb8c0c8, 0.78));
+  var sun = new THREE.DirectionalLight(0xffffff, 0.8);
+  sun.position.set(2.4, 4.2, 3);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.camera.left = -2.5; sun.shadow.camera.right = 2.5;
+  sun.shadow.camera.top = 2.5; sun.shadow.camera.bottom = -1.5;
+  sun.shadow.camera.near = 0.5; sun.shadow.camera.far = 12;
+  sun.shadow.bias = -0.0005;
+  scene.add(sun);
+  var fill = new THREE.DirectionalLight(0xdfe8ff, 0.28);
+  fill.position.set(-3, 2, -2); scene.add(fill);
+
+  function mat(color, rough, metal, extra) {
+    var m = new THREE.MeshStandardMaterial({ color: color, roughness: rough, metalness: metal });
+    if (extra) { for (var k in extra) { m[k] = extra[k]; } }
+    return m;
+  }
+  function box(w, h, d, material) {
+    var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
+    m.castShadow = true; m.receiveShadow = true; return m;
+  }
+  function cyl(rt, rb, h, material, seg) {
+    var m = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg || 32), material);
+    m.castShadow = true; m.receiveShadow = true; return m;
+  }
+
+  var COL = { blue: 0x2f6fd0, yellow: 0xe3b021, red: 0xcf4a35 };
+  var M = {
+    floor: mat(0xd8dce0, 0.95, 0),
+    wood: mat(0xd9c4a0, 0.7, 0),
+    leg: mat(0x3a4046, 0.5, 0.5),
+    matGreen: mat(0x2e5d4b, 0.9, 0),
+    line: mat(0xf4f6f2, 0.8, 0),
+    card: mat(0xb98f5e, 0.85, 0, { side: THREE.DoubleSide }),
+    mast: mat(0xd2d7db, 0.35, 0.75),
+    dark: mat(0x22272b, 0.5, 0.3),
+    lens: mat(0x0b0d10, 0.1, 0.6),
+    encl: mat(0x9fb2bd, 0.55, 0),
+    stool: mat(0x4a545b, 0.7, 0.1)
+  };
+
+  var floor = new THREE.Mesh(new THREE.CircleGeometry(8, 64), M.floor);
+  floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+  var grid = new THREE.GridHelper(7, 28, 0xc2c8ce, 0xcdd2d7);
+  grid.position.y = 0.001; scene.add(grid);
+
+  var unit = new THREE.Group(); scene.add(unit);
+  var TOP = 0.76;   // height of the table surface
+
+  // Workbench
+  var tabletop = box(1.25, 0.04, 0.72, M.wood); tabletop.position.y = TOP - 0.02; unit.add(tabletop);
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (s) {
+    var leg = box(0.045, TOP - 0.04, 0.045, M.leg);
+    leg.position.set(s[0] * 0.57, (TOP - 0.04) / 2, s[1] * 0.31); unit.add(leg);
+  });
+  var rail = box(1.14, 0.03, 0.03, M.leg); rail.position.set(0, 0.2, -0.31); unit.add(rail);
+
+  // Stool for scale
+  var seat = cyl(0.17, 0.17, 0.04, M.stool, 32); seat.position.set(0, 0.5, 0.72); unit.add(seat);
+  var post = cyl(0.025, 0.025, 0.46, M.leg, 16); post.position.set(0, 0.25, 0.72); unit.add(post);
+  var foot = cyl(0.2, 0.22, 0.025, M.leg, 32); foot.position.set(0, 0.0125, 0.72); unit.add(foot);
+
+  // Work mat with a marked zone
+  var MAT_Z = 0.12;
+  var wmat = box(0.56, 0.004, 0.36, M.matGreen); wmat.position.set(0, TOP + 0.002, MAT_Z); unit.add(wmat);
+  var zoneMat = new THREE.MeshStandardMaterial({ color: 0xf4f6f2, emissive: 0xffffff, emissiveIntensity: 0, roughness: 0.8 });
+  [[0, -0.09, 0.26, 0.006], [0, 0.09, 0.26, 0.006], [-0.127, 0, 0.006, 0.186], [0.127, 0, 0.006, 0.186]].forEach(function (z) {
+    var ln = box(z[2], 0.001, z[3], zoneMat); ln.castShadow = false;
+    ln.position.set(z[0], TOP + 0.0046, MAT_Z + z[1]); unit.add(ln);
+  });
+
+  // The kit box being packed
+  var kit = new THREE.Group(); unit.add(kit);
+  kit.position.set(0, TOP + 0.005, MAT_Z);
+  var kb = box(0.23, 0.005, 0.15, M.card); kb.position.y = 0.0025; kit.add(kb);
+  [[0, -0.075, 0.23, 0.005], [0, 0.075, 0.23, 0.005], [-0.115, 0, 0.005, 0.15], [0.115, 0, 0.005, 0.15]].forEach(function (w) {
+    var wall = box(w[2], 0.055, w[3], M.card); wall.position.set(w[0], 0.03, w[1]); kit.add(wall);
+  });
+
+  // Items
+  function makeItem(kind) {
+    var m;
+    if (kind === 'blue') { m = cyl(0.02, 0.02, 0.085, mat(COL.blue, 0.4, 0.05), 20); }
+    else if (kind === 'yellow') { m = box(0.06, 0.024, 0.038, mat(COL.yellow, 0.6, 0)); }
+    else { m = box(0.1, 0.014, 0.018, mat(COL.red, 0.5, 0)); }
+    return m;
+  }
+  var placed = {
+    blue: makeItem('blue'), yellow: makeItem('yellow'), red: makeItem('red')
+  };
+  placed.blue.rotation.z = Math.PI / 2; placed.blue.position.set(-0.01, 0.027, -0.04);
+  placed.yellow.position.set(-0.05, 0.019, 0.03);
+  placed.red.position.set(0.045, 0.014, 0.035); placed.red.rotation.y = 0.25;
+  kit.add(placed.blue); kit.add(placed.yellow); kit.add(placed.red);
+  var wrong = { blue: makeItem('blue'), yellow: makeItem('yellow'), red: makeItem('red') };
+  Object.keys(wrong).forEach(function (k) {
+    wrong[k].position.set(0.05, 0.03, -0.03); wrong[k].rotation.set(0.3, 0.5, k === 'blue' ? Math.PI / 2 : 0.2);
+    kit.add(wrong[k]);
+  });
+
+  // Parts bins along the back
+  var bins = {};
+  [['blue', -0.26], ['yellow', 0], ['red', 0.26]].forEach(function (b) {
+    var g = new THREE.Group(); unit.add(g);
+    g.position.set(b[1], TOP + 0.05, -0.2); g.rotation.x = 0.32;
+    var trayMat = new THREE.MeshStandardMaterial({ color: COL[b[0]], roughness: 0.6, emissive: COL[b[0]], emissiveIntensity: 0 });
+    var base = box(0.21, 0.008, 0.17, trayMat); base.position.y = -0.03; g.add(base);
+    [[0, -0.085, 0.21, 0.008, 0.07], [0, 0.085, 0.21, 0.008, 0.04], [-0.105, 0, 0.008, 0.17, 0.07], [0.105, 0, 0.008, 0.17, 0.07]].forEach(function (w) {
+      var wall = box(w[2], w[4], w[3], trayMat); wall.position.set(w[0], -0.03 + w[4] / 2, w[1]); g.add(wall);
+    });
+    for (var i = 0; i < 6; i++) {
+      var it = makeItem(b[0]);
+      it.position.set(-0.055 + (i % 3) * 0.055, -0.012 + Math.floor(i / 3) * 0.012, -0.03 + Math.floor(i / 3) * 0.05 + (i % 2) * 0.01);
+      it.rotation.set(b[0] === 'blue' ? Math.PI / 2 : 0, i * 0.9, 0.1 * i);
+      g.add(it);
+    }
+    // light strip on the front lip of each bin
+    var stripMat = new THREE.MeshStandardMaterial({ color: 0x2a2f33, emissive: 0xffffff, emissiveIntensity: 0, roughness: 0.4 });
+    var strip = box(0.19, 0.012, 0.006, stripMat); strip.position.set(0, 0.0, 0.092); g.add(strip);
+    bins[b[0]] = { group: g, tray: trayMat, strip: stripMat };
+  });
+
+  // Mast, arm and camera
+  var MAST_Z = -0.37, MAST_H = 0.86, ARM_Y = TOP + MAST_H - 0.02;
+  var clamp = box(0.08, 0.09, 0.07, M.dark); clamp.position.set(0, TOP - 0.01, MAST_Z + 0.02); unit.add(clamp);
+  var mast = cyl(0.015, 0.015, MAST_H, M.mast, 20); mast.position.set(0, TOP + MAST_H / 2, MAST_Z); unit.add(mast);
+  var armLen = MAT_Z - MAST_Z + 0.02;
+  var arm = box(0.026, 0.02, armLen, M.mast); arm.position.set(0, ARM_Y, MAST_Z + armLen / 2); unit.add(arm);
+  var elbow = box(0.042, 0.046, 0.042, M.dark); elbow.position.set(0, ARM_Y, MAST_Z); unit.add(elbow);
+  var camHead = new THREE.Group(); unit.add(camHead); camHead.position.set(0, ARM_Y - 0.03, MAT_Z);
+  camHead.add(box(0.07, 0.035, 0.07, M.dark));
+  var lens = cyl(0.016, 0.02, 0.022, M.lens, 24); lens.position.y = -0.028; camHead.add(lens);
+  var ring = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.006, 10, 40),
+    new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xfff3d6, emissiveIntensity: 0.9, roughness: 0.4 }));
+  ring.rotation.x = Math.PI / 2; ring.position.y = -0.02; camHead.add(ring);
+
+  var coneH = ARM_Y - 0.07 - TOP;
+  var coneGeo = new THREE.ConeGeometry(0.33, coneH, 4, 1, true); coneGeo.rotateY(Math.PI / 4);
+  var cone = new THREE.Mesh(coneGeo, new THREE.MeshBasicMaterial({ color: 0x2563a8, transparent: true, opacity: 0.1, side: THREE.DoubleSide, depthWrite: false }));
+  cone.scale.z = 0.68; cone.position.set(0, TOP + coneH / 2, MAT_Z); unit.add(cone);
+  var coneEdge = new THREE.LineSegments(new THREE.EdgesGeometry(coneGeo), new THREE.LineBasicMaterial({ color: 0x2563a8, transparent: true, opacity: 0.4 }));
+  coneEdge.scale.copy(cone.scale); coneEdge.position.copy(cone.position); unit.add(coneEdge);
+
+  // Electronics box on the mast
+  var enc = box(0.18, 0.12, 0.055, M.encl); enc.position.set(0, TOP + 0.5, MAST_Z + 0.045); unit.add(enc);
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (s) {
+    var sc = cyl(0.005, 0.005, 0.003, M.mast, 12); sc.rotation.x = Math.PI / 2;
+    sc.position.set(s[0] * 0.078, TOP + 0.5 + s[1] * 0.048, MAST_Z + 0.074); unit.add(sc);
+  });
+
+  // Screen with the current step
+  var scr = new THREE.Group(); unit.add(scr);
+  scr.position.set(-0.47, TOP + 0.16, -0.12); scr.rotation.y = 0.42;
+  var scrTilt = new THREE.Group(); scrTilt.rotation.x = -0.28; scr.add(scrTilt);
+  scrTilt.add(box(0.3, 0.2, 0.014, M.dark));
+  var cv = document.createElement('canvas'); cv.width = 640; cv.height = 416;
+  var ctx = cv.getContext('2d');
+  var tex = new THREE.CanvasTexture(cv); tex.encoding = THREE.sRGBEncoding; tex.anisotropy = 4;
+  var face = new THREE.Mesh(new THREE.PlaneGeometry(0.278, 0.18), new THREE.MeshBasicMaterial({ map: tex }));
+  face.position.z = 0.0075; scrTilt.add(face);
+  var neck = box(0.03, 0.12, 0.02, M.dark); neck.position.set(0, -0.1, -0.02); scr.add(neck);
+  var sbase = box(0.16, 0.012, 0.11, M.dark); sbase.position.set(0, -0.154, -0.01); scr.add(sbase);
+  // Speaker beside the screen
+  var spk = new THREE.Group(); unit.add(spk); spk.position.set(-0.3, TOP + 0.035, 0.1); spk.rotation.y = 0.42;
+  spk.add(box(0.07, 0.07, 0.05, M.dark));
+  var grille = cyl(0.024, 0.024, 0.004, mat(0x555d64, 0.6, 0.3), 24); grille.rotation.x = Math.PI / 2;
+  grille.position.z = 0.026; spk.add(grille);
+
+  // Status light tower
+  var tower = new THREE.Group(); unit.add(tower); tower.position.set(0.5, TOP, -0.22);
+  var tpost = cyl(0.012, 0.012, 0.16, M.mast, 16); tpost.position.y = 0.08; tower.add(tpost);
+  var tbase = cyl(0.04, 0.045, 0.02, M.dark, 24); tbase.position.y = 0.01; tower.add(tbase);
+  var lamp = {};
+  [['red', 0xd8432f, 0.19], ['amber', 0xf0a81c, 0.235], ['green', 0x2fbf6b, 0.28]].forEach(function (l) {
+    var lm = new THREE.MeshStandardMaterial({ color: l[1], emissive: l[1], emissiveIntensity: 0, roughness: 0.35, transparent: true, opacity: 0.95 });
+    var seg = cyl(0.028, 0.028, 0.04, lm, 24); seg.position.y = l[2]; tower.add(seg); lamp[l[0]] = lm;
+  });
+  var cap = cyl(0.03, 0.03, 0.008, M.dark, 24); cap.position.y = 0.305; tower.add(cap);
+
+  // Help button
+  var help = new THREE.Group(); unit.add(help); help.position.set(0.47, TOP, 0.2);
+  var hb = box(0.11, 0.035, 0.11, mat(0xe9ecef, 0.5, 0)); hb.position.y = 0.0175; help.add(hb);
+  var hcap = cyl(0.036, 0.04, 0.022, mat(0x2563a8, 0.4, 0.05), 32); hcap.position.y = 0.046; help.add(hcap);
+
+  // Cables
+  function tube(points, radius) {
+    var curve = new THREE.CatmullRomCurve3(points.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }));
+    var m = new THREE.Mesh(new THREE.TubeGeometry(curve, 40, radius || 0.0035, 8, false), mat(0x1d2023, 0.8, 0));
+    m.castShadow = true; return m;
+  }
+  unit.add(tube([[0, TOP + 0.56, MAST_Z + 0.03], [0.012, ARM_Y - 0.08, MAST_Z + 0.014], [0, ARM_Y - 0.012, MAST_Z + 0.1], [0, ARM_Y - 0.012, MAT_Z - 0.03]], 0.003));
+  unit.add(tube([[-0.06, TOP + 0.44, MAST_Z + 0.04], [-0.2, TOP + 0.02, MAST_Z + 0.06], [-0.4, TOP + 0.008, -0.22], [-0.46, TOP + 0.008, -0.14]], 0.003));
+  unit.add(tube([[0.06, TOP + 0.44, MAST_Z + 0.04], [0.25, TOP + 0.02, MAST_Z + 0.05], [0.44, TOP + 0.008, -0.26], [0.5, TOP + 0.008, -0.23]], 0.003));
+  unit.add(tube([[0.5, TOP + 0.008, -0.2], [0.53, TOP + 0.006, 0], [0.5, TOP + 0.008, 0.15]], 0.003));
+  unit.add(tube([[0, TOP + 0.44, MAST_Z + 0.02], [0.02, TOP - 0.1, MAST_Z - 0.02], [0.03, 0.3, MAST_Z - 0.03], [0.2, 0.01, MAST_Z - 0.15], [0.9, 0.008, MAST_Z - 0.3]], 0.0045));
+
+  // Demo task state
+  var steps = [
+    { title: 'Put the box on the mat', bin: null, say: 'The screen asks for an empty box inside the white outline.' },
+    { title: 'Add one bottle', bin: 'blue', say: 'The blue bin lights up. The camera waits to see one bottle in the box.' },
+    { title: 'Add one soap', bin: 'yellow', say: 'The yellow bin lights up. The camera waits to see one soap in the box.' },
+    { title: 'Add one brush', bin: 'red', say: 'The red bin lights up. The camera waits to see one brush in the box.' }
+  ];
+  var names = { blue: 'bottle', yellow: 'soap', red: 'brush' };
+  var css = { blue: '#2f6fd0', yellow: '#e3b021', red: '#cf4a35' };
+  var state = { n: 0 };
+  var ui = {
+    now: document.getElementById('now'), what: document.getElementById('what'),
+    prev: document.getElementById('prev'), next: document.getElementById('next'), reset: document.getElementById('reset'),
+    oops: document.getElementById('oops'), fov: document.getElementById('fov'),
+    tags: document.getElementById('tags'), spin: document.getElementById('spin')
+  };
+
+  function wrongKind(n) { var order = ['blue', 'yellow', 'red']; return order[n % 3]; }
+  function mistakeOn() { return ui.oops.checked && state.n >= 1 && state.n <= 3; }
+
+  function rounded(x, y, w, h, r) {
+    ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+  function drawScreen() {
+    var n = state.n, W = cv.width, H = cv.height, bad = mistakeOn();
+    ctx.fillStyle = n === 4 ? '#e3f6ea' : (bad ? '#fdeeea' : '#ffffff'); ctx.fillRect(0, 0, W, H);
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    if (n === 4) {
+      ctx.fillStyle = '#2fbf6b'; ctx.beginPath(); ctx.arc(W / 2, 150, 82, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 20; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.beginPath(); ctx.moveTo(W / 2 - 38, 152); ctx.lineTo(W / 2 - 10, 182); ctx.lineTo(W / 2 + 42, 120); ctx.stroke();
+      ctx.fillStyle = '#1c2126'; ctx.font = '600 52px Segoe UI, Arial'; ctx.fillText('All done', W / 2, 290);
+      ctx.fillStyle = '#5b6670'; ctx.font = '32px Segoe UI, Arial'; ctx.fillText('Nice work. Start the next box.', W / 2, 348);
+    } else {
+      var s = steps[n];
+      ctx.fillStyle = '#5b6670'; ctx.font = '30px Segoe UI, Arial'; ctx.fillText('Step ' + (n + 1) + ' of 4', W / 2, 42);
+      var c = s.bin ? css[s.bin] : '#b98f5e';
+      ctx.fillStyle = c; rounded(W / 2 - 80, 78, 160, 150, 22); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,0.92)';
+      if (!s.bin) { ctx.fillRect(W / 2 - 48, 128, 96, 62); ctx.fillStyle = c; ctx.fillRect(W / 2 - 38, 138, 76, 42); }
+      else if (s.bin === 'blue') { rounded(W / 2 - 20, 104, 40, 100, 12); ctx.fill(); ctx.fillRect(W / 2 - 10, 92, 20, 16); }
+      else if (s.bin === 'yellow') { rounded(W / 2 - 46, 128, 92, 52, 16); ctx.fill(); }
+      else { ctx.fillRect(W / 2 - 52, 146, 70, 14); ctx.fillRect(W / 2 + 18, 132, 34, 42); }
+      if (bad) {
+        ctx.fillStyle = '#b3341f'; ctx.font = '600 44px Segoe UI, Arial'; ctx.fillText('Not that one', W / 2, 284);
+        ctx.fillStyle = '#1c2126'; ctx.font = '32px Segoe UI, Arial';
+        ctx.fillText('Take it out. Use the ' + s.bin + ' bin.', W / 2, 336);
+      } else {
+        ctx.fillStyle = '#1c2126'; ctx.font = '600 46px Segoe UI, Arial'; ctx.fillText(s.title, W / 2, 290);
+      }
+    }
+    for (var i = 0; i < 4; i++) {
+      ctx.fillStyle = i < n ? '#2fbf6b' : (i === n ? '#2563a8' : '#ccd3da');
+      ctx.beginPath(); ctx.arc(W / 2 - 60 + i * 40, 388, 10, 0, Math.PI * 2); ctx.fill();
+    }
+    tex.needsUpdate = true;
+  }
+
+  function apply() {
+    var n = state.n, bad = mistakeOn();
+    kit.visible = n >= 1;
+    placed.blue.visible = n >= 2; placed.yellow.visible = n >= 3; placed.red.visible = n >= 4;
+    var wk = bad ? wrongKind(n) : null;
+    Object.keys(wrong).forEach(function (k) { wrong[k].visible = (k === wk); });
+    if (n === 4) { ui.now.textContent = 'All four steps checked'; ui.what.textContent = 'The light is green and the screen tells the worker the kit is complete.'; }
+    else if (bad) {
+      ui.now.textContent = 'Step ' + (n + 1) + ' of 4: wrong part';
+      ui.what.textContent = 'The camera sees a ' + names[wk] + ' where a ' + names[steps[n].bin] + ' belongs. The light turns red and the screen points back to the ' + steps[n].bin + ' bin.';
+    } else { ui.now.textContent = 'Step ' + (n + 1) + ' of 4: ' + steps[n].title.toLowerCase(); ui.what.textContent = steps[n].say; }
+    ui.prev.disabled = n === 0; ui.next.disabled = n === 4 || bad;
+    ui.next.textContent = n === 3 ? 'Finish' : 'Next step';
+    ui.oops.disabled = !(n >= 1 && n <= 3);
+    drawScreen();
+  }
+  ui.next.addEventListener('click', function () { if (state.n < 4) { state.n++; apply(); } });
+  ui.prev.addEventListener('click', function () { if (state.n > 0) { state.n--; apply(); } });
+  ui.reset.addEventListener('click', function () { state.n = 0; ui.oops.checked = false; apply(); });
+  ui.oops.addEventListener('change', apply);
+
+  // Labels
+  var v3 = new THREE.Vector3();
+  var tagDefs = [
+    { t: '<b>Camera</b> checks each step', at: function () { return camHead.localToWorld(new THREE.Vector3(0.04, 0, 0)); } },
+    { t: '<b>Arduino Uno Q</b> in a sealed box', at: function () { return new THREE.Vector3(0.09, TOP + 0.52, MAST_Z + 0.07); } },
+    { t: '<b>Screen</b> shows one picture step', at: function () { return scrTilt.localToWorld(new THREE.Vector3(-0.15, 0.06, 0.01)); } },
+    { t: '<b>Parts bins</b> that light up in turn', at: function () { return bins.red.group.localToWorld(new THREE.Vector3(0.105, 0.02, 0)); } },
+    { t: '<b>Status light</b>', at: function () { return tower.localToWorld(new THREE.Vector3(0.03, 0.28, 0)); } },
+    { t: '<b>Help button</b> calls the job coach', at: function () { return help.localToWorld(new THREE.Vector3(0.04, 0.05, 0)); } },
+    { t: '<b>Work mat</b> with a marked zone', at: function () { return new THREE.Vector3(0.28, TOP + 0.005, MAT_Z + 0.16); } },
+    { t: '<b>Speaker</b> for spoken prompts', at: function () { return spk.localToWorld(new THREE.Vector3(-0.035, 0.02, 0.026)); } }
+  ];
+  tagDefs.forEach(function (d) {
+    var el = document.createElement('div'); el.className = 'tag'; el.innerHTML = d.t; labelLayer.appendChild(el); d.el = el;
+  });
+  var shown = [];
+  function placeTags(visible) {
+    var w = stage.clientWidth, h = stage.clientHeight;
+    tagDefs.forEach(function (d) {
+      if (!visible) { d.el.style.display = 'none'; return; }
+      v3.copy(d.at()).project(camera);
+      if (v3.z > 1 || v3.z < -1) { d.el.style.display = 'none'; return; }
+      d.el.style.display = 'block';
+      d.x = (v3.x * 0.5 + 0.5) * w; d.y = (-v3.y * 0.5 + 0.5) * h; d.w = d.w || d.el.offsetWidth;
+      shown.push(d);
+    });
+    shown.sort(function (a, b) { return a.y - b.y; });
+    for (var i = 0; i < shown.length; i++) {
+      var a = shown[i]; a.ly = a.y;
+      for (var j = 0; j < i; j++) {
+        var b = shown[j];
+        if (a.x < b.x + b.w + 30 && b.x < a.x + a.w + 30 && a.ly < b.ly + 27) { a.ly = b.ly + 27; }
+      }
+      a.el.style.left = a.x.toFixed(1) + 'px'; a.el.style.top = a.ly.toFixed(1) + 'px';
+    }
+    shown.length = 0;
+  }
+
+  // Orbit controls
+  var HOME = new THREE.Vector3(0, 0.8, 0.12);
+  var target = HOME.clone();
+  var orbit = { theta: 0.62, phi: 1.12, radius: 3.5 };
+  var goal = { theta: 0.62, phi: 1.12, radius: 3.5 };
+  var views = { iso: [0.62, 1.12, 3.5], front: [0, 1.38, 3.5], side: [Math.PI / 2, 1.38, 3.5], top: [0.001, 0.08, 3.4] };
+  var drag = null, lastInput = 0;
+  stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  stage.addEventListener('pointerdown', function (e) {
+    drag = { x: e.clientX, y: e.clientY, pan: e.button === 2 || e.shiftKey };
+    stage.classList.add('dragging'); stage.setPointerCapture(e.pointerId); lastInput = performance.now();
+  });
+  stage.addEventListener('pointermove', function (e) {
+    if (!drag) { return; }
+    var dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY;
+    if (drag.pan) {
+      var right = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 0);
+      var up = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 1);
+      var k = orbit.radius * 0.0012;
+      target.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
+    } else {
+      goal.theta -= dx * 0.006;
+      goal.phi = Math.min(Math.PI / 2 - 0.02, Math.max(0.06, goal.phi - dy * 0.006));
+    }
+    lastInput = performance.now();
+  });
+  function endDrag() { drag = null; stage.classList.remove('dragging'); }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+  stage.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    goal.radius = Math.min(8, Math.max(0.7, goal.radius * (e.deltaY > 0 ? 1.1 : 0.9)));
+    lastInput = performance.now();
+  }, { passive: false });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-view]'), function (b) {
+    b.addEventListener('click', function () {
+      var v = views[b.getAttribute('data-view')];
+      var turns = Math.round((orbit.theta - v[0]) / (Math.PI * 2));
+      goal.theta = v[0] + turns * Math.PI * 2; goal.phi = v[1]; goal.radius = v[2];
+      target.copy(HOME); ui.spin.checked = false;
+    });
+  });
+
+  function resize() {
+    var w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize); resize();
+  apply();
+
+  var prev = performance.now();
+  function frame(now) {
+    var dt = Math.min(0.05, (now - prev) / 1000); prev = now;
+    if (ui.spin.checked && !drag && now - lastInput > 1500) { goal.theta += dt * 0.16; }
+    var ease = 1 - Math.pow(0.001, dt);
+    orbit.theta += (goal.theta - orbit.theta) * ease;
+    orbit.phi += (goal.phi - orbit.phi) * ease;
+    orbit.radius += (goal.radius - orbit.radius) * ease;
+    camera.position.set(
+      target.x + orbit.radius * Math.sin(orbit.phi) * Math.sin(orbit.theta),
+      target.y + orbit.radius * Math.cos(orbit.phi),
+      target.z + orbit.radius * Math.sin(orbit.phi) * Math.cos(orbit.theta));
+    camera.lookAt(target);
+
+    // Lights follow the demo state
+    var n = state.n, bad = mistakeOn();
+    var pulse = 0.55 + 0.45 * Math.sin(now / 260);
+    var active = (n >= 1 && n <= 3) ? steps[n].bin : null;
+    Object.keys(bins).forEach(function (k) {
+      var on = k === active;
+      bins[k].tray.emissiveIntensity = on ? 0.25 + 0.3 * pulse : 0;
+      bins[k].strip.emissiveIntensity = on ? 0.6 + 0.6 * pulse : 0;
+    });
+    zoneMat.emissiveIntensity = n === 0 ? 0.3 + 0.5 * pulse : 0;
+    lamp.green.emissiveIntensity = n === 4 ? 1.3 : 0.03;
+    lamp.red.emissiveIntensity = bad ? 0.7 + 0.6 * pulse : 0.03;
+    lamp.amber.emissiveIntensity = (n < 4 && !bad) ? 0.9 : 0.03;
+
+    cone.visible = ui.fov.checked; coneEdge.visible = ui.fov.checked;
+    unit.updateMatrixWorld(true); camera.updateMatrixWorld(true);
+    placeTags(ui.tags.checked);
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
